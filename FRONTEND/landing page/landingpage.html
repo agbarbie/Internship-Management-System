@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>InternHub — Internship Management Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="landingpage.js"></script>
+  <link rel="stylesheet" href="landingpage.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <div class="logo-dot"></div>
+      Intern<span>Hub</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="tasks.html">Tasks</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
+      <a href="login.html" class="btn-nav">Sign In</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="tasks.html">Tasks</a>
+    <a href="login.html" style="color:var(--orange);border:none;margin-top:.5rem">Sign In →</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-content">
+      <div class="hero-badge">🚀 Next-gen Internship Management</div>
+      <h1>
+        <span class="line"><span>Manage Interns,</span></span>
+        <span class="line"><span>Track Tasks & <em>Grow</em></span></span>
+        <span class="line"><span>Together.</span></span>
+      </h1>
+      <p class="hero-desc">
+        InternHub is the all-in-one platform where interns submit work, supervisors
+        review progress, and organizations build tomorrow's talent — beautifully organized.
+      </p>
+      <div class="hero-cta">
+        <a href="register.html" class="btn-primary">Get Started Free →</a>
+        <a href="dashboard.html" class="btn-secondary">View Dashboard</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">2.4<span>k</span></div>
+          <div class="stat-label">Active Interns</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">98<span>%</span></div>
+          <div class="stat-label">Satisfaction</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">150<span>+</span></div>
+          <div class="stat-label">Organizations</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard preview -->
+    <div class="hero-visual">
+      <div class="dashboard-preview">
+        <div class="preview-header">
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <div class="preview-dot"></div>
+          <span class="preview-title">InternHub Dashboard</span>
+        </div>
+        <div class="preview-stats">
+          <div class="preview-stat">
+            <div class="preview-stat-num orange">12</div>
+            <div class="preview-stat-label">Tasks Due</div>
+          </div>
+          <div class="preview-stat">
+            <div class="preview-stat-num">8</div>
+            <div class="preview-stat-label">Submitted</div>
+          </div>
+          <div class="preview-stat">
+            <div class="preview-stat-num">5</div>
+            <div class="preview-stat-label">Approved</div>
+          </div>
+        </div>
+        <div class="preview-tasks">
+          <div style="font-size:.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem">Recent Submissions</div>
+          <div class="preview-task">
+            <div class="task-info">
+              <div class="task-icon">📊</div>
+              <div>
+                <div class="task-name">Data Analysis Report</div>
+                <div class="task-sub">Due today · 3 files</div>
+              </div>
+            </div>
+            <span class="tag tag-orange">Pending</span>
+          </div>
+          <div class="preview-task">
+            <div class="task-info">
+              <div class="task-icon">🎨</div>
+              <div>
+                <div class="task-name">UI Prototype v2</div>
+                <div class="task-sub">Submitted · 2 days ago</div>
+              </div>
+            </div>
+            <span class="tag tag-green">Approved</span>
+          </div>
+          <div class="preview-task">
+            <div class="task-info">
+              <div class="task-icon">📝</div>
+              <div>
+                <div class="task-name">Weekly Progress</div>
+                <div class="task-sub">In review · Yesterday</div>
+              </div>
+            </div>
+            <span class="tag tag-blue">Review</span>
+          </div>
+        </div>
+        <div style="margin-top:1rem">
+          <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-bottom:.4rem">
+            <span>Overall Progress</span><span>67%</span>
+          </div>
+          <div class="preview-bar"><div class="preview-bar-fill" style="width:67%"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="reveal">
+      <div class="section-label">Platform Features</div>
+      <div class="section-title">Everything you need to<br>run a great internship</div>
+      <p class="section-desc">From onboarding to final evaluation — InternHub streamlines every touchpoint between interns and their supervisors.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">📋</div>
+        <div class="feature-title">Task Submission Portal</div>
+        <div class="feature-desc">Interns submit assignments with file attachments, notes, and status updates. Supervisors receive instant notifications.</div>
+        <a href="tasks.html" class="feature-link">Explore Tasks →</a>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Live Dashboard</div>
+        <div class="feature-desc">Real-time analytics showing submission rates, pending reviews, approvals, and individual intern performance metrics.</div>
+        <a href="dashboard.html" class="feature-link">Open Dashboard →</a>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">👤</div>
+        <div class="feature-title">Intern Profiles</div>
+        <div class="feature-desc">Each intern has a dedicated profile with their task history, skills, progress timeline, and supervisor feedback.</div>
+        <a href="#" class="feature-link">View Profiles →</a>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">🔔</div>
+        <div class="feature-title">Smart Notifications</div>
+        <div class="feature-desc">Automated reminders for upcoming deadlines, review requests, and approval statuses keep everyone in sync.</div>
+        <a href="#" class="feature-link">Learn More →</a>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">✅</div>
+        <div class="feature-title">Review & Feedback</div>
+        <div class="feature-desc">Supervisors can approve, request revisions, or reject submissions with structured feedback and rating scores.</div>
+        <a href="#" class="feature-link">See Reviews →</a>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon">📁</div>
+        <div class="feature-title">File Management</div>
+        <div class="feature-desc">Secure file uploads for reports, designs, code, and documents — all organized by project and intern.</div>
+        <a href="#" class="feature-link">Browse Files →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="how-bg">
+    <div class="reveal" style="text-align:center">
+      <div class="section-label">Process</div>
+      <div class="section-title">Simple. Structured. Seamless.</div>
+      <p class="section-desc" style="margin:0 auto">Get up and running in minutes — no complicated setup required.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card reveal">
+        <div class="step-num">01</div>
+        <div class="step-title">Register & Join</div>
+        <div class="step-desc">Interns sign up and get assigned to their organization. Supervisors set up teams and projects instantly.</div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">02</div>
+        <div class="step-title">Receive Tasks</div>
+        <div class="step-desc">Supervisors create and assign tasks with deadlines, priorities, and supporting materials to their interns.</div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">03</div>
+        <div class="step-title">Submit Work</div>
+        <div class="step-desc">Interns complete assignments and submit their work through the portal with files and progress notes.</div>
+      </div>
+      <div class="step-card reveal">
+        <div class="step-num">04</div>
+        <div class="step-title">Get Reviewed</div>
+        <div class="step-desc">Supervisors review submissions, provide feedback, and track overall internship performance over time.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section>
+    <div class="reveal" style="text-align:center">
+      <div class="section-label">Testimonials</div>
+      <div class="section-title">Loved by teams & interns</div>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"InternHub completely transformed how we manage our intern program. The task tracking alone saved us hours every week."</div>
+        <div class="testi-author">
+          <div class="testi-avatar">SM</div>
+          <div>
+            <div class="testi-name">Sarah Mitchell</div>
+            <div class="testi-role">HR Manager, TechCorp</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"As an intern, I finally know exactly what's expected of me and when. The dashboard keeps me organized and motivated."</div>
+        <div class="testi-author">
+          <div class="testi-avatar">JK</div>
+          <div>
+            <div class="testi-name">James Kariuki</div>
+            <div class="testi-role">Software Intern, Safaricom</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"The feedback system is excellent. My supervisor's reviews are clear, specific, and have actually helped me grow significantly."</div>
+        <div class="testi-author">
+          <div class="testi-avatar">AN</div>
+          <div>
+            <div class="testi-name">Amara Nwosu</div>
+            <div class="testi-role">Design Intern, CreativeHub</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section reveal">
+    <h2>Ready to level up your internship program?</h2>
+    <p>Join 150+ organizations already using InternHub to manage their interns better.</p>
+    <a href="register.html" class="btn-white">Start for Free Today</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="text-decoration:none">
+          <div class="logo-dot"></div>
+          Intern<span style="color:var(--orange)">Hub</span>
+        </a>
+        <p>The modern platform for managing internship programs — from onboarding to evaluation.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="tasks.html">Task Submissions</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="login.html">Sign In</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <ul class="footer-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 InternHub. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn">𝕏</a>
+        <a href="#" class="social-btn">in</a>
+        <a href="#" class="social-btn">gh</a>
+      </div>
+    </div>
+  </footer>
+
+  
+</body>
+</html>

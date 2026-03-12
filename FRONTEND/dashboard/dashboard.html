@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — InternHub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css"/>
+  <script src="dashboard.js"></script>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <a href="index.html"><div class="logo-dot"></div>Intern<span>Hub</span></a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item active" href="dashboard.html">
+        <span class="nav-item-icon">📊</span> Dashboard
+      </a>
+      <a class="nav-item" href="tasks.html">
+        <span class="nav-item-icon">📋</span> Task Submissions
+        <span class="nav-badge">3</span>
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-item-icon">📁</span> My Projects
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-item-icon">🔔</span> Notifications
+        <span class="nav-badge">5</span>
+      </a>
+      <div class="nav-section-label">Manage</div>
+      <a class="nav-item" href="#">
+        <span class="nav-item-icon">👥</span> Interns
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-item-icon">✅</span> Reviews
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-item-icon">📈</span> Reports
+      </a>
+      <div class="nav-section-label">Account</div>
+      <a class="nav-item" href="#">
+        <span class="nav-item-icon">⚙️</span> Settings
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-mini">
+        <div class="user-avatar-sm" id="sidebarAvatar">JK</div>
+        <div class="user-mini-info">
+          <div class="user-mini-name" id="sidebarName">James K.</div>
+          <div class="user-mini-role" id="sidebarRole">Intern · TechCorp</div>
+        </div>
+        <button class="logout-btn" onclick="logout()" title="Logout">⏻</button>
+      </div>
+    </div>
+  </aside>
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <button class="hamburger-top" id="hamburgerTop" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-left">
+        <h2>Dashboard</h2>
+        <p id="greetingText">Good morning, James 👋</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="theme-toggle" id="themeToggle"></button>
+      <div class="notif-btn"><span>🔔</span><div class="notif-dot"></div></div>
+      <div class="topbar-avatar" id="topAvatar">JK</div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="main-inner">
+
+      <!-- STAT CARDS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon orange">📋</div>
+            <span class="stat-trend trend-up">+12%</span>
+          </div>
+          <div class="stat-num">24</div>
+          <div class="stat-label">Total Tasks Assigned</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon green">✅</div>
+            <span class="stat-trend trend-up">+5</span>
+          </div>
+          <div class="stat-num">18</div>
+          <div class="stat-label">Tasks Submitted</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon blue">⏳</div>
+            <span class="stat-trend trend-down">-2</span>
+          </div>
+          <div class="stat-num">3</div>
+          <div class="stat-label">Pending Review</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon purple">⭐</div>
+            <span class="stat-trend trend-up">+0.3</span>
+          </div>
+          <div class="stat-num">4.7</div>
+          <div class="stat-label">Avg. Feedback Score</div>
+        </div>
+      </div>
+
+      <!-- MAIN GRID -->
+      <div class="dash-grid">
+        <!-- Submission Activity Chart -->
+        <div class="widget">
+          <div class="widget-header">
+            <div class="widget-title">Submission Activity</div>
+            <div style="display:flex;gap:.5rem;">
+              <span style="font-size:.72rem;color:var(--text3);padding:.2rem .6rem;background:var(--bg3);border-radius:6px;cursor:pointer;">This Week</span>
+            </div>
+          </div>
+          <div class="progress-chart" id="progressChart"></div>
+          <div style="display:flex;gap:1.5rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--text2);">
+              <div style="width:10px;height:10px;border-radius:2px;background:var(--orange);"></div>Submitted
+            </div>
+            <div style="display:flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--text2);">
+              <div style="width:10px;height:10px;border-radius:2px;background:rgba(59,130,246,.5);"></div>Approved
+            </div>
+          </div>
+        </div>
+
+        <!-- Donut / Status Breakdown -->
+        <div class="widget">
+          <div class="widget-header">
+            <div class="widget-title">Task Status</div>
+            <a class="widget-action" href="tasks.html">View All</a>
+          </div>
+          <div class="donut-wrap">
+            <svg class="donut-svg" viewBox="0 0 42 42">
+              <circle cx="21" cy="21" r="15.91" fill="none" stroke="var(--bg3)" stroke-width="4"/>
+              <circle cx="21" cy="21" r="15.91" fill="none" stroke="#27c93f" stroke-width="4"
+                stroke-dasharray="45 55" stroke-dashoffset="25" class="donut-seg"/>
+              <circle cx="21" cy="21" r="15.91" fill="none" stroke="var(--orange)" stroke-width="4"
+                stroke-dasharray="30 70" stroke-dashoffset="-20" class="donut-seg"/>
+              <circle cx="21" cy="21" r="15.91" fill="none" stroke="#60a5fa" stroke-width="4"
+                stroke-dasharray="15 85" stroke-dashoffset="-50" class="donut-seg"/>
+              <text x="21" y="20" text-anchor="middle" style="font-family:'Syne',sans-serif;font-size:5px;font-weight:800;fill:var(--text)">75%</text>
+              <text x="21" y="25" text-anchor="middle" style="font-size:2.5px;fill:var(--text3)">Complete</text>
+            </svg>
+            <div class="donut-legend">
+              <div class="legend-item">
+                <div class="legend-dot-wrap"><div class="legend-dot" style="background:#27c93f"></div>Approved</div>
+                <span class="legend-val">18</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot-wrap"><div class="legend-dot" style="background:var(--orange)"></div>Pending Review</div>
+                <span class="legend-val">3</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot-wrap"><div class="legend-dot" style="background:#60a5fa"></div>In Progress</div>
+                <span class="legend-val">3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECOND GRID -->
+      <div class="dash-grid2">
+        <!-- Upcoming Tasks -->
+        <div class="widget">
+          <div class="widget-header">
+            <div class="widget-title">Upcoming Tasks</div>
+            <a class="widget-action" href="tasks.html">+ New Task</a>
+          </div>
+          <div class="task-list" id="taskList"></div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="widget">
+          <div class="widget-header">
+            <div class="widget-title">Recent Activity</div>
+          </div>
+          <div class="activity-list" id="activityFeed"></div>
+        </div>
+      </div>
+
+      <!-- INTERNS TABLE -->
+      <div class="widget" style="margin-top:1.5rem;">
+        <div class="widget-header">
+          <div class="widget-title">Intern Overview</div>
+          <div style="display:flex;gap:.8rem;align-items:center;">
+            <input type="text" placeholder="Search interns..." style="padding:.4rem .8rem;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.8rem;outline:none;width:180px;" id="internSearch" oninput="filterInterns(this.value)">
+            <a class="widget-action" href="#">View All</a>
+          </div>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="interns-table" id="internTable">
+            <thead>
+              <tr>
+                <th>Intern</th>
+                <th>Department</th>
+                <th>Tasks</th>
+                <th>Progress</th>
+                <th>Status</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody id="internBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</body>
+</html>

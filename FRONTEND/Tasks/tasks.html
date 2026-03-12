@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task Submissions — InternHub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tasks.css"/>
+  <script src="tasks.js"></script>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <a href="index.html"><div class="logo-dot"></div>Intern<span>Hub</span></a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-item" href="dashboard.html"><span class="nav-item-icon">📊</span> Dashboard</a>
+      <a class="nav-item active" href="tasks.html"><span class="nav-item-icon">📋</span> Task Submissions<span class="nav-badge">3</span></a>
+      <a class="nav-item" href="#"><span class="nav-item-icon">📁</span> My Projects</a>
+      <a class="nav-item" href="#"><span class="nav-item-icon">🔔</span> Notifications<span class="nav-badge">5</span></a>
+      <div class="nav-section-label">Manage</div>
+      <a class="nav-item" href="#"><span class="nav-item-icon">👥</span> Interns</a>
+      <a class="nav-item" href="#"><span class="nav-item-icon">✅</span> Reviews</a>
+      <a class="nav-item" href="#"><span class="nav-item-icon">📈</span> Reports</a>
+      <div class="nav-section-label">Account</div>
+      <a class="nav-item" href="#"><span class="nav-item-icon">⚙️</span> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-mini">
+        <div class="user-avatar-sm" id="sidebarAvatar">JK</div>
+        <div class="user-mini-info">
+          <div class="user-mini-name" id="sidebarName">James K.</div>
+          <div class="user-mini-role" id="sidebarRole">Intern · TechCorp</div>
+        </div>
+        <button class="logout-btn" onclick="window.location.href='login.html'" title="Logout">⏻</button>
+      </div>
+    </div>
+  </aside>
+  <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <button class="hamburger-top" id="hamburgerTop" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-left">
+        <h2>Task Submissions</h2>
+        <p>Submit, track, and manage your assignments</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="theme-toggle" id="themeToggle"></button>
+      <div class="topbar-avatar" id="topAvatar">JK</div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="main-inner">
+      <div class="page-header-bar">
+        <div class="page-title">My Tasks</div>
+        <button class="btn-primary" onclick="openModal()">+ Submit New Task</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">All Tasks</button>
+        <button class="filter-btn" data-filter="pending">Pending</button>
+        <button class="filter-btn" data-filter="submitted">Submitted</button>
+        <button class="filter-btn" data-filter="approved">Approved</button>
+        <button class="filter-btn" data-filter="revision">Needs Revision</button>
+        <input class="search-bar" type="text" placeholder="🔍  Search tasks…" id="taskSearch" oninput="filterTasks()">
+      </div>
+
+      <!-- Tasks Grid -->
+      <div class="tasks-grid" id="tasksGrid"></div>
+    </div>
+  </main>
+
+  <!-- SUBMIT TASK MODAL -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Submit a Task</h2>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Task Title *</label>
+            <input type="text" id="taskTitle" placeholder="e.g. Data Analysis Report"/>
+          </div>
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="taskCat">
+              <option value="">Select category</option>
+              <option>Design</option>
+              <option>Development</option>
+              <option>Data Science</option>
+              <option>Report</option>
+              <option>Marketing</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description / Notes</label>
+          <textarea id="taskDesc" placeholder="Describe what you've done, any challenges, and how this meets the requirements…"></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Deadline</label>
+            <input type="text" id="taskDue" placeholder="e.g. Jun 20, 2025"/>
+          </div>
+          <div class="form-group">
+            <label>Assigned By</label>
+            <input type="text" id="taskSupervisor" placeholder="Supervisor name"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Priority Level</label>
+          <div class="priority-group">
+            <button class="priority-btn" data-p="low" onclick="setPriority('low')">🟢 Low</button>
+            <button class="priority-btn selected-med" data-p="medium" onclick="setPriority('medium')">🟠 Medium</button>
+            <button class="priority-btn" data-p="high" onclick="setPriority('high')">🔴 High</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Attach Files</label>
+          <div class="file-drop" id="fileDrop" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+            <input type="file" id="fileInput" multiple onchange="handleFiles(this.files)">
+            <div class="file-drop-icon">📎</div>
+            <div class="file-drop-text">Drag & drop files here or <span>browse</span></div>
+            <div style="font-size:.72rem;color:var(--text3);margin-top:.3rem">PDF, DOCX, XLSX, PNG, JPG, ZIP — max 10MB each</div>
+          </div>
+          <div class="file-list" id="fileList"></div>
+        </div>
+        <div class="form-group">
+          <label>Completion %</label>
+          <input type="range" id="taskProgress" min="0" max="100" value="100" style="width:100%;accent-color:var(--orange)" oninput="document.getElementById('progressLabel').textContent=this.value+'%'">
+          <div style="font-size:.78rem;color:var(--text2);margin-top:.3rem">Completion: <strong id="progressLabel">100%</strong></div>
+        </div>
+        <div id="modalError" style="background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.25);border-radius:8px;padding:.7rem 1rem;font-size:.82rem;color:#ff6b6b;display:none;margin-top:.5rem;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-submit-modal" onclick="submitTask()">Submit Task →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span class="toast-icon">✅</span>
+    <span id="toastMsg">Task submitted successfully!</span>
+  </div>
+
+</body>
+</html>

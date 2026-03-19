@@ -6,26 +6,26 @@
   <title>InternHub — Internship Management Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <script src="landingpage.js"></script>
   <link rel="stylesheet" href="landingpage.css">
+  <script type="module" src="landingpage.js"></script>
 </head>
 <body>
 
   <!-- NAV -->
   <nav>
-    <a href="index.html" class="nav-logo">
+    <a href="/" class="nav-logo">
       <div class="logo-dot"></div>
       Intern<span>Hub</span>
     </a>
     <ul class="nav-links">
       <li><a href="#features">Features</a></li>
       <li><a href="#how">How it works</a></li>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="tasks.html">Tasks</a></li>
+      <li><a href="/dashboard/dashboard.html">Dashboard</a></li>
+      <li><a href="/Tasks/tasks.html">Tasks</a></li>
     </ul>
     <div class="nav-right">
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
-      <a href="login.html" class="btn-nav">Sign In</a>
+      <a href="/login/login.html" class="btn-nav">Sign In</a>
     </div>
     <div class="hamburger" id="hamburger">
       <span></span><span></span><span></span>
@@ -36,9 +36,9 @@
   <div class="mobile-menu" id="mobileMenu">
     <a href="#features">Features</a>
     <a href="#how">How it works</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="tasks.html">Tasks</a>
-    <a href="login.html" style="color:var(--orange);border:none;margin-top:.5rem">Sign In →</a>
+    <a href="/dashboard/dashboard.html">Dashboard</a>
+    <a href="/Tasks/tasks.html">Tasks</a>
+    <a href="/login/login.html" style="color:var(--orange);border:none;margin-top:.5rem">Sign In →</a>
   </div>
 
   <!-- HERO -->
@@ -58,8 +58,8 @@
         review progress, and organizations build tomorrow's talent — beautifully organized.
       </p>
       <div class="hero-cta">
-        <a href="register.html" class="btn-primary">Get Started Free →</a>
-        <a href="dashboard.html" class="btn-secondary">View Dashboard</a>
+        <a href="/signup/register.html" class="btn-primary">Get Started Free →</a>
+        <a href="/dashboard/dashboard.html" class="btn-secondary">View Dashboard</a>
       </div>
       <div class="hero-stats">
         <div class="stat-item">
@@ -155,13 +155,13 @@
         <div class="feature-icon">📋</div>
         <div class="feature-title">Task Submission Portal</div>
         <div class="feature-desc">Interns submit assignments with file attachments, notes, and status updates. Supervisors receive instant notifications.</div>
-        <a href="tasks.html" class="feature-link">Explore Tasks →</a>
+        <a href="/Tasks/tasks.html" class="feature-link">Explore Tasks →</a>
       </div>
       <div class="feature-card reveal">
         <div class="feature-icon">📊</div>
         <div class="feature-title">Live Dashboard</div>
         <div class="feature-desc">Real-time analytics showing submission rates, pending reviews, approvals, and individual intern performance metrics.</div>
-        <a href="dashboard.html" class="feature-link">Open Dashboard →</a>
+        <a href="/dashboard/dashboard.html" class="feature-link">Open Dashboard →</a>
       </div>
       <div class="feature-card reveal">
         <div class="feature-icon">👤</div>
@@ -268,14 +268,14 @@
   <div class="cta-section reveal">
     <h2>Ready to level up your internship program?</h2>
     <p>Join 150+ organizations already using InternHub to manage their interns better.</p>
-    <a href="register.html" class="btn-white">Start for Free Today</a>
+    <a href="/signup/register.html" class="btn-white">Start for Free Today</a>
   </div>
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-top">
       <div class="footer-brand">
-        <a href="index.html" class="nav-logo" style="text-decoration:none">
+        <a href="/" class="nav-logo" style="text-decoration:none">
           <div class="logo-dot"></div>
           Intern<span style="color:var(--orange)">Hub</span>
         </a>
@@ -284,10 +284,10 @@
       <div>
         <div class="footer-col-title">Platform</div>
         <ul class="footer-links">
-          <li><a href="dashboard.html">Dashboard</a></li>
-          <li><a href="tasks.html">Task Submissions</a></li>
-          <li><a href="register.html">Register</a></li>
-          <li><a href="login.html">Sign In</a></li>
+          <li><a href="/dashboard/dashboard.html">Dashboard</a></li>
+          <li><a href="/Tasks/tasks.html">Task Submissions</a></li>
+          <li><a href="/signup/register.html">Register</a></li>
+          <li><a href="/login/login.html">Sign In</a></li>
         </ul>
       </div>
       <div>
@@ -318,6 +318,5 @@
     </div>
   </footer>
 
-  
 </body>
 </html>

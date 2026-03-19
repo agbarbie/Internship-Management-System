@@ -1,4 +1,4 @@
- :root {
+    :root {
       --orange: #FF6B00;
       --orange-light: #FF8C35;
       --orange-glow: rgba(255,107,0,0.18);
@@ -459,3 +459,8 @@
       border-bottom:1px solid var(--border);
     }
     .mobile-menu a:hover { color:var(--orange); }
+    .reveal {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}

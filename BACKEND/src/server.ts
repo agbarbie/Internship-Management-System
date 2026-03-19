@@ -36,10 +36,10 @@ app.get('/api/health', (_req: Request, res: Response) => {
   });
 });
 
-// ── FALLBACK — serve index.html for all other routes
-app.get('*', (_req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, '../public', 'index.html'));
-});
+// ── FALLBACK — serve landing page for all other routes
+// app.get('*path', (_req: Request, res: Response) => {
+//   res.sendFile(path.join(__dirname, '../public', 'landing', 'landingpage.html'));
+// });
 
 // ── START SERVER ──────────────────────────────────
 app.listen(PORT, () => {

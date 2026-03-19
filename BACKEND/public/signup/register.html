@@ -9,7 +9,7 @@
 </head>
 <body>
   <nav>
-    <a href="index.html" class="nav-logo"><div class="logo-dot"></div>Intern<span>Hub</span></a>
+    <a href="/landing/landingpage.html" class="nav-logo"><div class="logo-dot"></div>Intern<span>Hub</span></a>
     <button class="theme-toggle" id="themeToggle"></button>
   </nav>
 
@@ -27,7 +27,7 @@
         <div class="step-dot" id="dot3"></div>
       </div>
 
-      <!-- Role selection -->
+      <!-- Step 1: Role + Personal info -->
       <div class="form-section active" id="step1">
         <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;text-align:center;margin-bottom:1.2rem;color:var(--text2);">Who are you joining as?</div>
         <div class="role-selector">
@@ -130,17 +130,16 @@
             <button class="btn-back" style="flex:1" onclick="goStep(2)">← Edit Details</button>
           </div>
 
-          <!-- Success -->
-          <div class="success-card" id="successCard">
+          <!-- Success card — redirect handled by register.js, no hardcoded link needed -->
+          <div class="success-card" id="successCard" style="display:none;">
             <div class="success-icon">🎉</div>
             <h2>Account Created!</h2>
-            <p>Welcome to InternHub. Your account has been successfully set up. You're ready to get started!</p>
-            <a href="dashboard.html" class="btn-submit" style="display:inline-block;text-decoration:none;padding:.85rem 2rem;width:auto;">Go to Dashboard →</a>
+            <p>Welcome to InternHub. Your account has been successfully set up. Redirecting you to your dashboard…</p>
           </div>
         </div>
       </div>
 
-      <div class="auth-footer">Already have an account? <a href="login.html">Sign in</a></div>
+      <div class="auth-footer">Already have an account? <a href="/login/login.html">Sign in</a></div>
     </div>
   </div>
 

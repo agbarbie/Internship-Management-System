@@ -8,33 +8,43 @@
   <script type="module" src="tasks.js"></script>
 </head>
 <body>
+
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <a href="index.html"><div class="logo-dot"></div>Intern<span>Hub</span></a>
+      <a href="../landing/landingpage.html">
+        <div class="logo-dot"></div>Intern<span>Hub</span>
+      </a>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Main</div>
-      <a class="nav-item" href="dashboard.html"><span class="nav-item-icon">📊</span> Dashboard</a>
-      <a class="nav-item active" href="tasks.html"><span class="nav-item-icon">📋</span> Task Submissions<span class="nav-badge">3</span></a>
-      <a class="nav-item" href="#"><span class="nav-item-icon">📁</span> My Projects</a>
-      <a class="nav-item" href="#"><span class="nav-item-icon">🔔</span> Notifications<span class="nav-badge">5</span></a>
-      <div class="nav-section-label">Manage</div>
-      <a class="nav-item" href="#"><span class="nav-item-icon">👥</span> Interns</a>
-      <a class="nav-item" href="#"><span class="nav-item-icon">✅</span> Reviews</a>
-      <a class="nav-item" href="#"><span class="nav-item-icon">📈</span> Reports</a>
-      <div class="nav-section-label">Account</div>
+      <a class="nav-item" href="/dashboard/intern-dashboard.html"><span class="nav-item-icon">📊</span> Dashboard</a>
+      <a class="nav-item active" href="/Tasks/tasks.html"><span class="nav-item-icon">📋</span> My Tasks</a>
+      <a class="nav-item" href="/submissions/submissions.html"><span class="nav-item-icon">📁</span> My Submissions</a>
+      <a class="nav-item" href="/notifications/notifications.html"><span class="nav-item-icon">🔔</span> Notifications</a>
+      <div class="nav-section-label">Profile</div>
+      <a class="nav-item" href="/profile/profile.html"><span class="nav-item-icon">👤</span> My Profile</a>
+      <a class="nav-item" href="/feedback/my-feedback.html"><span class="nav-item-icon">⭐</span> My Feedback</a>
       <a class="nav-item" href="#"><span class="nav-item-icon">⚙️</span> Settings</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-mini">
-        <div class="user-avatar-sm" id="sidebarAvatar">JK</div>
+        <div class="user-avatar-sm" id="sidebarAvatar">??</div>
         <div class="user-mini-info">
-          <div class="user-mini-name" id="sidebarName">James K.</div>
-          <div class="user-mini-role" id="sidebarRole">Intern · TechCorp</div>
+          <div class="user-mini-name" id="sidebarName">Loading...</div>
+          <div class="user-mini-role" id="sidebarRole">Intern · InternHub</div>
         </div>
-        <button class="logout-btn" onclick="window.location.href='login.html'" title="Logout">⏻</button>
       </div>
+      <button class="logout-btn" id="logoutBtn" title="Logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span>Logout</span>
+      </button>
     </div>
   </aside>
   <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
@@ -52,7 +62,7 @@
     </div>
     <div class="topbar-right">
       <button class="theme-toggle" id="themeToggle"></button>
-      <div class="topbar-avatar" id="topAvatar">JK</div>
+      <div class="topbar-avatar" id="topAvatar">??</div>
     </div>
   </header>
 
@@ -61,10 +71,8 @@
     <div class="main-inner">
       <div class="page-header-bar">
         <div class="page-title">My Tasks</div>
-        <button class="btn-primary" onclick="openModal()">+ Submit New Task</button>
+        <button class="btn-primary" id="openNewTaskBtn">+ Submit New Task</button>
       </div>
-
-      <!-- Filters -->
       <div class="filter-bar">
         <button class="filter-btn active" data-filter="all">All Tasks</button>
         <button class="filter-btn" data-filter="pending">Pending</button>
@@ -73,8 +81,6 @@
         <button class="filter-btn" data-filter="revision">Needs Revision</button>
         <input class="search-bar" type="text" placeholder="🔍  Search tasks…" id="taskSearch" oninput="filterTasks()">
       </div>
-
-      <!-- Tasks Grid -->
       <div class="tasks-grid" id="tasksGrid"></div>
     </div>
   </main>
@@ -96,41 +102,40 @@
             <label>Category *</label>
             <select id="taskCat">
               <option value="">Select category</option>
-              <option>Design</option>
-              <option>Development</option>
-              <option>Data Science</option>
-              <option>Report</option>
-              <option>Marketing</option>
-              <option>Other</option>
+              <option>Design</option><option>Development</option>
+              <option>Data Science</option><option>Report</option>
+              <option>Marketing</option><option>Other</option>
             </select>
           </div>
         </div>
         <div class="form-group">
           <label>Description / Notes</label>
-          <textarea id="taskDesc" placeholder="Describe what you've done, any challenges, and how this meets the requirements…"></textarea>
+          <textarea id="taskDesc" placeholder="Describe what you've done…"></textarea>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>Deadline</label>
-            <input type="text" id="taskDue" placeholder="e.g. Jun 20, 2025"/>
+            <input type="text" id="taskDue" placeholder="e.g. Jun 20, 2025" readonly/>
           </div>
           <div class="form-group">
             <label>Assigned By</label>
-            <input type="text" id="taskSupervisor" placeholder="Supervisor name"/>
+            <input type="text" id="taskSupervisor" placeholder="Supervisor name" readonly/>
           </div>
         </div>
         <div class="form-group">
           <label>Priority Level</label>
           <div class="priority-group">
-            <button class="priority-btn" data-p="low" onclick="setPriority('low')">🟢 Low</button>
+            <button class="priority-btn" data-p="low"    onclick="setPriority('low')">🟢 Low</button>
             <button class="priority-btn selected-med" data-p="medium" onclick="setPriority('medium')">🟠 Medium</button>
-            <button class="priority-btn" data-p="high" onclick="setPriority('high')">🔴 High</button>
+            <button class="priority-btn" data-p="high"   onclick="setPriority('high')">🔴 High</button>
           </div>
         </div>
         <div class="form-group">
           <label>Attach Files</label>
-          <div class="file-drop" id="fileDrop" onclick="document.getElementById('fileInput').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
-            <input type="file" id="fileInput" multiple onchange="handleFiles(this.files)">
+          <div class="file-drop" id="fileDrop"
+               onclick="document.getElementById('fileInput').click()"
+               ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
+            <input type="file" id="fileInput" multiple onchange="handleFiles(this.files)" style="display:none">
             <div class="file-drop-icon">📎</div>
             <div class="file-drop-text">Drag & drop files here or <span>browse</span></div>
             <div style="font-size:.72rem;color:var(--text3);margin-top:.3rem">PDF, DOCX, XLSX, PNG, JPG, ZIP — max 10MB each</div>
@@ -139,10 +144,15 @@
         </div>
         <div class="form-group">
           <label>Completion %</label>
-          <input type="range" id="taskProgress" min="0" max="100" value="100" style="width:100%;accent-color:var(--orange)" oninput="document.getElementById('progressLabel').textContent=this.value+'%'">
-          <div style="font-size:.78rem;color:var(--text2);margin-top:.3rem">Completion: <strong id="progressLabel">100%</strong></div>
+          <input type="range" id="taskProgress" min="0" max="100" value="100"
+                 style="width:100%;accent-color:var(--orange)"
+                 oninput="document.getElementById('progressLabel').textContent=this.value+'%'">
+          <div style="font-size:.78rem;color:var(--text2);margin-top:.3rem">
+            Completion: <strong id="progressLabel">100%</strong>
+          </div>
         </div>
-        <div id="modalError" style="background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.25);border-radius:8px;padding:.7rem 1rem;font-size:.82rem;color:#ff6b6b;display:none;margin-top:.5rem;"></div>
+        <div id="modalError" style="background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.25);
+             border-radius:8px;padding:.7rem 1rem;font-size:.82rem;color:#ff6b6b;display:none;margin-top:.5rem;"></div>
       </div>
       <div class="modal-footer">
         <button class="btn-cancel" onclick="closeModal()">Cancel</button>
@@ -151,7 +161,6 @@
     </div>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toast">
     <span class="toast-icon">✅</span>
     <span id="toastMsg">Task submitted successfully!</span>

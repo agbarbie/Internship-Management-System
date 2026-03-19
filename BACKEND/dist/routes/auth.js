@@ -10,4 +10,5 @@ const router = (0, express_1.Router)();
 router.post('/register', auth_controller_1.register);
 router.post('/login', auth_controller_1.login);
 router.get('/me', auth_1.default, auth_controller_1.getMe);
+router.patch('/profile', auth_1.default, auth_controller_1.updateProfile);
 exports.default = router;

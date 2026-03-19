@@ -42,11 +42,11 @@ async function apiFetch(endpoint, options = {}) {
   return data;
 }
 
+// ── Absolute login path — works from ANY folder depth ────────
+// Using an absolute path from the server root eliminates all
+// relative-path arithmetic that breaks when folder depth changes.
 function getLoginPath() {
-  // Works from any subfolder depth
-  const depth = window.location.pathname.split('/').filter(Boolean).length;
-  const prefix = depth > 1 ? '../'.repeat(depth - 1) : './';
-  return `${prefix}Login page/login.html`;
+  return '/login/login.html';
 }
 
 export class ApiError extends Error {
@@ -59,11 +59,9 @@ export class ApiError extends Error {
 
 // ═══════════════════════════════════════════════════════════════
 //  AUTH SERVICE
-//  Backend responses: { token, user: { id, first_name, last_name, email, role, ... } }
 // ═══════════════════════════════════════════════════════════════
 export const AuthService = {
   async register(payload) {
-    // payload: { first_name, last_name, email, password, role, organization, department }
     const data = await apiFetch('/auth/register', {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -76,7 +74,6 @@ export const AuthService = {
   },
 
   async login(payload) {
-    // payload: { email, password }
     const data = await apiFetch('/auth/login', {
       method: 'POST',
       body: JSON.stringify(payload),
@@ -92,6 +89,7 @@ export const AuthService = {
     return apiFetch('/auth/me');
   },
 
+  // ── FIX 1 (continued): logout always navigates to login ──────
   logout() {
     TokenService.clear();
     window.location.href = getLoginPath();
@@ -105,14 +103,12 @@ export const AuthService = {
     return TokenService.getUser();
   },
 
-  // Call at the top of every protected page
   requireAuth() {
     if (!this.isLoggedIn()) {
       window.location.href = getLoginPath();
     }
   },
 
-  // Returns display name: "James K."
   getDisplayName() {
     const u = this.getCurrentUser();
     if (!u) return '';
@@ -120,7 +116,6 @@ export const AuthService = {
     return `${u.first_name} ${last}`.trim();
   },
 
-  // Returns 2-letter initials: "JK"
   getInitials() {
     const u = this.getCurrentUser();
     if (!u) return '??';
@@ -130,8 +125,6 @@ export const AuthService = {
 
 // ═══════════════════════════════════════════════════════════════
 //  DASHBOARD SERVICE
-//  Intern  → { stats: {...}, profile: {...} }
-//  Supervisor → { stats: [...], overview: [...] }
 // ═══════════════════════════════════════════════════════════════
 export const DashboardService = {
   getStats() {
@@ -150,11 +143,6 @@ export const DashboardService = {
 
 // ═══════════════════════════════════════════════════════════════
 //  TASKS SERVICE
-//  GET /api/tasks          → array of task rows (with intern_name, supervisor_name)
-//  GET /api/tasks/:id      → { task, submissions, feedback }
-//  POST /api/tasks         → created task row  (supervisor)
-//  POST /api/tasks/:id/submit → submission row (intern)
-//  PATCH /api/tasks/:id/review → { message }   (supervisor)
 // ═══════════════════════════════════════════════════════════════
 export const TasksService = {
   getAll(params = {}) {
@@ -164,19 +152,13 @@ export const TasksService = {
   getById(id) {
     return apiFetch(`/tasks/${id}`);
   },
-  // supervisor creates a task
   create(payload) {
-    // payload: { title, description, category, priority, assigned_to, due_date, tags? }
     return apiFetch('/tasks', { method: 'POST', body: JSON.stringify(payload) });
   },
-  // intern submits a task
   submit(id, payload) {
-    // payload: { content, progress_pct, submission_type }
     return apiFetch(`/tasks/${id}/submit`, { method: 'POST', body: JSON.stringify(payload) });
   },
-  // supervisor reviews
   review(id, payload) {
-    // payload: { action: 'approve'|'revision'|'reject', rating?, comment? }
     return apiFetch(`/tasks/${id}/review`, { method: 'PATCH', body: JSON.stringify(payload) });
   },
   getFiles(id) {
@@ -186,8 +168,6 @@ export const TasksService = {
 
 // ═══════════════════════════════════════════════════════════════
 //  INTERNS SERVICE
-//  GET /api/interns        → array from v_intern_overview
-//  GET /api/interns/:id    → { intern, tasks, feedback }
 // ═══════════════════════════════════════════════════════════════
 export const InternsService = {
   getAll() {

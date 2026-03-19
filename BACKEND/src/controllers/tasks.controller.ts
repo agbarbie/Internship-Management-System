@@ -14,8 +14,8 @@ export const getTasks = async (req: AuthRequest, res: Response): Promise<void> =
              assignee.first_name || ' ' || assignee.last_name AS intern_name,
              assigner.first_name || ' ' || assigner.last_name AS supervisor_name,
              p.name AS project_name,
-             COUNT(ts.id)  AS submission_count,
-             COUNT(fa.id)  AS file_count
+             COUNT(DISTINCT ts.id)  AS submission_count,
+             COUNT(DISTINCT fa.id)  AS file_count
       FROM tasks t
       JOIN users assignee ON assignee.id = t.assigned_to
       JOIN users assigner ON assigner.id = t.assigned_by
@@ -74,10 +74,15 @@ export const getTaskById = async (req: AuthRequest, res: Response): Promise<void
 
     const submissions = await pool.query(
       `SELECT ts.*,
-              array_agg(json_build_object(
-                'id', fa.id, 'file_name', fa.file_name,
-                'file_size_kb', fa.file_size_kb, 'file_type', fa.file_type
-              )) AS files
+              COALESCE(
+                array_agg(
+                  json_build_object(
+                    'id', fa.id, 'file_name', fa.file_name,
+                    'file_size_kb', fa.file_size_kb, 'file_type', fa.file_type
+                  )
+                ) FILTER (WHERE fa.id IS NOT NULL),
+                '{}'
+              ) AS files
        FROM task_submissions ts
        LEFT JOIN file_attachments fa ON fa.submission_id = ts.id
        WHERE ts.task_id = $1
@@ -116,14 +121,15 @@ export const createTask = async (req: AuthRequest, res: Response): Promise<void>
       `INSERT INTO tasks (title, description, category, priority, assigned_to, assigned_by, project_id, due_date, tags)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
        RETURNING *`,
-      [title, description, category, priority || 'medium', assigned_to, req.user?.id, project_id, due_date, tags]
+      [title, description, category, priority || 'medium', assigned_to, req.user?.id, project_id || null, due_date || null, tags || null]
     );
 
+    // Notify the assigned intern
     await pool.query(
       `INSERT INTO notifications (user_id, type, title, message, link)
        VALUES ($1, 'task_assigned', 'New Task Assigned', $2, $3)`,
       [assigned_to, `New task assigned: ${title}`, `/tasks/${result.rows[0].id}`]
-    );
+    ).catch(e => console.warn('Notification insert failed (non-fatal):', e.message));
 
     res.status(201).json(result.rows[0]);
   } catch (err: any) {
@@ -133,41 +139,81 @@ export const createTask = async (req: AuthRequest, res: Response): Promise<void>
 };
 
 // ── SUBMIT TASK ───────────────────────────────────────────────
+// FIX: wrapped in a transaction so a failure in activity_log or
+//      notifications doesn't roll back the actual submission.
+//      Also validates that the task belongs to the requesting intern.
 export const submitTask = async (req: AuthRequest, res: Response): Promise<void> => {
+  const taskId  = req.params.id;
+  const userId  = req.user?.id;
   const { content, progress_pct, submission_type } = req.body;
 
+  const client = await pool.connect();
   try {
-    await pool.query(
-      `UPDATE tasks SET status = 'submitted', submitted_at = NOW(),
-       progress_pct = $1, updated_at = NOW() WHERE id = $2`,
-      [progress_pct || 100, req.params.id]
-    );
+    await client.query('BEGIN');
 
-    const submission = await pool.query(
-      `INSERT INTO task_submissions (task_id, submitted_by, content, progress_pct, submission_type)
-       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-      [req.params.id, req.user?.id, content, progress_pct || 100, submission_type || 'initial']
+    // ── Validate: task must exist and be assigned to this intern ──
+    const taskCheck = await client.query(
+      `SELECT id, assigned_by, title, status, assigned_to
+       FROM tasks WHERE id = $1`,
+      [taskId]
     );
+    if (taskCheck.rows.length === 0) {
+      await client.query('ROLLBACK');
+      res.status(404).json({ error: 'Task not found.' });
+      return;
+    }
+    const task = taskCheck.rows[0];
 
-    await pool.query(
-      `INSERT INTO activity_log (user_id, action, entity_type, entity_id, meta)
-       VALUES ($1, 'task_submitted', 'task', $2, $3)`,
-      [req.user?.id, req.params.id, JSON.stringify({ submission_type: submission_type || 'initial' })]
-    );
-
-    const task = await pool.query('SELECT assigned_by, title FROM tasks WHERE id = $1', [req.params.id]);
-    if (task.rows.length > 0) {
-      await pool.query(
-        `INSERT INTO notifications (user_id, type, title, message, link)
-         VALUES ($1, 'task_submitted', 'Task Submitted for Review', $2, $3)`,
-        [task.rows[0].assigned_by, `${task.rows[0].title} has been submitted for review.`, `/tasks/${req.params.id}`]
-      );
+    if (task.assigned_to !== userId) {
+      await client.query('ROLLBACK');
+      res.status(403).json({ error: 'You can only submit tasks assigned to you.' });
+      return;
     }
 
+    // ── Update task status ────────────────────────────────────
+    await client.query(
+      `UPDATE tasks
+       SET status       = 'submitted',
+           submitted_at = NOW(),
+           progress_pct = $1,
+           updated_at   = NOW()
+       WHERE id = $2`,
+      [progress_pct ?? 100, taskId]
+    );
+
+    // ── Insert submission row ─────────────────────────────────
+    const submission = await client.query(
+      `INSERT INTO task_submissions
+         (task_id, submitted_by, content, progress_pct, submission_type)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [taskId, userId, content || '', progress_pct ?? 100, submission_type || 'initial']
+    );
+
+    await client.query('COMMIT');
+
+    // ── Non-critical: activity log + notification ─────────────
+    // These run AFTER commit so a failure here never causes a 500
+    pool.query(
+      `INSERT INTO activity_log (user_id, action, entity_type, entity_id, meta)
+       VALUES ($1, 'task_submitted', 'task', $2, $3)`,
+      [userId, taskId, JSON.stringify({ submission_type: submission_type || 'initial' })]
+    ).catch(e => console.warn('activity_log insert failed (non-fatal):', e.message));
+
+    pool.query(
+      `INSERT INTO notifications (user_id, type, title, message, link)
+       VALUES ($1, 'task_submitted', 'Task Submitted for Review', $2, $3)`,
+      [task.assigned_by, `${task.title} has been submitted for review.`, `/tasks/${taskId}`]
+    ).catch(e => console.warn('Notification insert failed (non-fatal):', e.message));
+
     res.status(201).json(submission.rows[0]);
+
   } catch (err: any) {
-    console.error('Submit task error:', err.message);
-    res.status(500).json({ error: 'Server error.' });
+    await client.query('ROLLBACK').catch(() => {});
+    console.error('Submit task error:', err.message, err.stack);
+    res.status(500).json({ error: err.message || 'Server error. Could not submit task.' });
+  } finally {
+    client.release();
   }
 };
 

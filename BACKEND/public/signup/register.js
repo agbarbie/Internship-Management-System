@@ -14,13 +14,35 @@ toggle?.addEventListener('click', () => {
   localStorage.setItem('theme', next);
 });
 
-// ── Redirect if already logged in ────────────────────────────
-if (AuthService.isLoggedIn()) {
-  window.location.href = '/dashboard/dashboard.html';
+// ── FIX: Role-based dashboard redirect ───────────────────────
+function redirectToDashboard(role) {
+  if (role === 'supervisor' || role === 'admin') {
+    window.location.href = '/dashboard/supervisor-dashboard.html';
+  } else {
+    window.location.href = '/dashboard/intern-dashboard.html';
+  }
 }
 
+// ── Do NOT auto-redirect logged-in users away from register ──
+// A logged-in user visiting /signup/register.html may want to
+// create a second account or was sent here from the landing page.
+// We simply let them stay on the page. If they want their dashboard
+// they can use the nav or login page.
+// (Removed the auto-redirect that was causing the instant bounce)
+
+// ── Pre-select role from URL query param ─────────────────────
+// Landing page sends ?role=intern or ?role=supervisor
+const urlParams = new URLSearchParams(window.location.search);
+const roleParam = urlParams.get('role');
+
 // ── Role selection ────────────────────────────────────────────
-let selectedRole = 'intern';
+let selectedRole = roleParam === 'supervisor' ? 'supervisor' : 'intern';
+
+// Apply pre-selection from URL param
+if (roleParam === 'supervisor') {
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('roleSupervisor')?.classList.add('selected');
+}
 
 document.querySelectorAll('.role-card').forEach(card => {
   card.addEventListener('click', () => {
@@ -133,12 +155,22 @@ window.submitForm = async function() {
     document.querySelector('.form-card')
       ?.querySelectorAll('.terms-group,.btn-submit,.nav-btns,.error-msg,#reviewContent,.section-title-sm')
       .forEach(el => el.style.display = 'none');
+
     const card = document.getElementById('successCard');
     if (card) card.style.display = 'block';
 
+    // FIX: redirect to correct role-based dashboard after short delay
+    setTimeout(() => {
+      const user = AuthService.getCurrentUser();
+      redirectToDashboard(user?.role || selectedRole);
+    }, 1800);
+
   } catch (err) {
     const el = document.getElementById('err3');
-    if (el) { el.textContent = err instanceof ApiError ? err.message : 'Registration failed.'; el.style.display = 'block'; }
+    if (el) {
+      el.textContent   = err instanceof ApiError ? err.message : 'Registration failed. Please try again.';
+      el.style.display = 'block';
+    }
     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Create Account →'; }
   }
 };

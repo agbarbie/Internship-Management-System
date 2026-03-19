@@ -36,7 +36,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMe = exports.login = exports.register = void 0;
+exports.updateProfile = exports.getMe = exports.login = exports.register = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jwt = __importStar(require("jsonwebtoken"));
 const db_1 = __importDefault(require("../db"));
@@ -178,3 +178,42 @@ const getMe = async (req, res) => {
     }
 };
 exports.getMe = getMe;
+// ── UPDATE PROFILE ────────────────────────────────────────────
+const updateProfile = async (req, res) => {
+    const { first_name, last_name, phone, bio, skills, university, course } = req.body;
+    const userId = req.user?.id;
+    try {
+        // Update users table
+        await db_1.default.query(`UPDATE users
+       SET first_name  = COALESCE($1, first_name),
+           last_name   = COALESCE($2, last_name),
+           phone       = COALESCE($3, phone),
+           bio         = COALESCE($4, bio),
+           skills      = COALESCE($5, skills),
+           updated_at  = NOW()
+       WHERE id = $6`, [first_name || null, last_name || null, phone || null,
+            bio || null, skills?.length ? skills : null, userId]);
+        // Update intern_profiles if university/course provided
+        if (university !== undefined || course !== undefined) {
+            await db_1.default.query(`UPDATE intern_profiles
+         SET university  = COALESCE($1, university),
+             course      = COALESCE($2, course),
+             updated_at  = NOW()
+         WHERE user_id = $3`, [university || null, course || null, userId]);
+        }
+        // Return updated user
+        const result = await db_1.default.query(`SELECT u.id, u.first_name, u.last_name, u.email, u.phone,
+              u.bio, u.skills, u.role, u.avatar_url,
+              o.name AS organization, d.name AS department
+       FROM users u
+       LEFT JOIN organizations o ON o.id = u.organization_id
+       LEFT JOIN departments   d ON d.id = u.department_id
+       WHERE u.id = $1`, [userId]);
+        res.json({ message: 'Profile updated successfully.', user: result.rows[0] });
+    }
+    catch (err) {
+        console.error('Update profile error:', err.message);
+        res.status(500).json({ error: 'Server error.' });
+    }
+};
+exports.updateProfile = updateProfile;

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Interns — InternHub</title>
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dashboard/supervisor-dashboard.css"/>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <a href="/landing/landingpage.html"><div class="logo-dot"></div>Intern<span>Hub</span></a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a class="nav-item" href="/dashboard/supervisor-dashboard.html"><span class="nav-item-icon">📊</span> Dashboard</a>
+      <a class="nav-item active" href="/interns/my-interns.html"><span class="nav-item-icon">👥</span> My Interns</a>
+      <a class="nav-item" href="/dashboard/supervisor-dashboard.html#reviews"><span class="nav-item-icon">✅</span> Pending Reviews</a>
+      <a class="nav-item" href="/interns/all-tasks.html"><span class="nav-item-icon">📋</span> All Tasks</a>
+      <div class="nav-section-label">Management</div>
+      <a class="nav-item" href="#" id="assignTaskBtn"><span class="nav-item-icon">➕</span> Assign Task</a>
+      <a class="nav-item" href="/reports/reports.html"><span class="nav-item-icon">📈</span> Reports</a>
+      <a class="nav-item" href="/notifications/notifications.html"><span class="nav-item-icon">🔔</span> Notifications</a>
+      <div class="nav-section-label">Account</div>
+      <a class="nav-item" href="#"><span class="nav-item-icon">⚙️</span> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-mini">
+        <div class="user-avatar-sm" id="sidebarAvatar">?</div>
+        <div class="user-mini-info">
+          <div class="user-mini-name" id="sidebarName">Loading...</div>
+          <div class="user-mini-role" id="sidebarRole">Supervisor</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logoutBtn" title="Logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <button class="hamburger-top" id="hamburgerTop"><span></span><span></span><span></span></button>
+      <div class="topbar-left"><h2>My Interns</h2><p id="greetingText">Managing your team</p></div>
+    </div>
+    <div class="topbar-right">
+      <button class="theme-toggle" id="themeToggle"></button>
+      <div class="topbar-avatar" id="topAvatar">?</div>
+    </div>
+  </header>
+
+  <!-- ASSIGN TASK MODAL -->
+  <div class="modal-backdrop" id="assignModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Assign New Task</h2>
+        <button class="modal-close" id="closeModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group"><label>Task Title *</label><input type="text" id="taskTitle" placeholder="e.g. Data Analysis Report"/></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category *</label>
+            <select id="taskCategory">
+              <option value="">Select category</option>
+              <option>Design</option><option>Development</option><option>Data Science</option>
+              <option>Report</option><option>Marketing</option><option>Finance</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="taskPriority">
+              <option value="medium">Medium</option><option value="low">Low</option>
+              <option value="high">High</option><option value="urgent">Urgent</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Assign To *</label><select id="taskAssignTo"><option value="">Select intern...</option></select></div>
+        <div class="form-group"><label>Due Date</label><input type="date" id="taskDueDate"/></div>
+        <div class="form-group"><label>Description</label><textarea id="taskDescription" placeholder="Describe the task requirements..."></textarea></div>
+        <div class="modal-error" id="modalError"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="cancelModal">Cancel</button>
+        <button class="btn-assign" id="submitTask">Assign Task →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERN DETAIL MODAL -->
+  <div class="modal-backdrop" id="internDetailModal">
+    <div class="modal" style="max-width:680px;">
+      <div class="modal-header"><h2>Intern Profile</h2><button class="modal-close" id="closeInternDetailModal">✕</button></div>
+      <div class="modal-body">
+        <div id="idmLoading" style="text-align:center;padding:2.5rem;color:var(--text3);">Loading details…</div>
+        <div id="idmError" style="display:none;background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.25);border-radius:10px;padding:1rem;color:#ff6b6b;font-size:.85rem;">⚠️ <span id="idmErrorMsg"></span></div>
+        <div id="idmContent" style="display:none;">
+          <div class="idm-hero">
+            <div class="idm-avatar" id="idmAvatar">??</div>
+            <div class="idm-info">
+              <h3 id="idmName">—</h3><p id="idmEmail">—</p>
+              <div class="idm-chips">
+                <span class="idm-chip">📁 <span id="idmDept">—</span></span>
+                <span class="idm-chip">🏢 <span id="idmOrg">—</span></span>
+                <span class="idm-chip">🎓 <span id="idmUni">—</span></span>
+                <span class="idm-chip">👔 <span id="idmSup">—</span></span>
+              </div>
+            </div>
+          </div>
+          <div class="idm-grid">
+            <div class="idm-card"><div class="idm-card-label">Overall Score</div><div class="idm-score" id="idmScore">—</div><div style="font-size:.7rem;color:var(--text3);">out of 5.0</div></div>
+            <div class="idm-card"><div class="idm-card-label">Task Progress</div><div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;" id="idmPct">—</div><div class="idm-prog-bar"><div class="idm-prog-fill" id="idmProgFill" style="width:0%;"></div></div><div style="font-size:.72rem;color:var(--text2);" id="idmCompleted">0 / 0 tasks</div></div>
+          </div>
+          <div style="font-size:.78rem;color:var(--text3);margin-bottom:1rem;">📅 <span id="idmDates">—</span></div>
+          <div class="idm-section-title">📋 Assigned Tasks</div>
+          <div class="idm-scroll" id="idmTasks"></div>
+          <div class="idm-section-title" style="margin-top:1rem;">💬 Feedback Given</div>
+          <div class="idm-scroll" id="idmFeedback"></div>
+        </div>
+      </div>
+      <div class="modal-footer"><button class="btn-cancel" id="closeInternDetailModalFooter">Close</button></div>
+    </div>
+  </div>
+
+  <main class="main">
+    <div class="main-inner">
+
+      <!-- Search + assign -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+        <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;">My Interns</div>
+        <div style="display:flex;gap:.8rem;align-items:center;">
+          <input type="text" class="search-bar" placeholder="🔍 Search interns…" id="internSearch" oninput="filterInterns(this.value)" style="width:220px;"/>
+          <button class="btn-primary-sm" id="openAssignModal">+ Assign Task</button>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-grid" style="margin-bottom:1.5rem;" id="statsRow">
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon orange">👥</div></div><div class="stat-num" id="statTotal">—</div><div class="stat-label">Total Interns</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon green">✅</div></div><div class="stat-num" id="statActive">—</div><div class="stat-label">Active</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon blue">🔄</div></div><div class="stat-num" id="statReview">—</div><div class="stat-label">In Review</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon orange">⏳</div></div><div class="stat-num" id="statPending">—</div><div class="stat-label">Pending</div></div>
+      </div>
+
+      <!-- Interns table -->
+      <div class="widget">
+        <div style="overflow-x:auto;">
+          <table class="interns-table">
+            <thead>
+              <tr><th>Intern</th><th>Department</th><th>Progress</th><th>Score</th><th>Status</th><th>Action</th></tr>
+            </thead>
+            <tbody id="internBody">
+              <tr><td colspan="6" class="loading-cell">Loading interns…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script type="module">
+    import { AuthService, InternsService, TasksService } from '../services/api.js';
+
+    if (!AuthService.isLoggedIn()) { window.location.href = '/login/login.html'; }
+    const user = AuthService.getCurrentUser();
+    if (user?.role === 'intern') { window.location.href = '/dashboard/intern-dashboard.html'; }
+
+    document.getElementById('themeToggle')?.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next);
+    });
+    document.getElementById('hamburgerTop')?.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
+    });
+    document.getElementById('overlay')?.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
+    });
+    document.getElementById('logoutBtn')?.addEventListener('click', () => AuthService.logout());
+
+    const initials = AuthService.getInitials();
+    document.getElementById('sidebarAvatar').textContent = initials;
+    document.getElementById('topAvatar').textContent     = initials;
+    document.getElementById('sidebarName').textContent   = AuthService.getDisplayName();
+    document.getElementById('sidebarRole').textContent   = `Supervisor · ${user?.organization || 'InternHub'}`;
+
+    let allInterns = [];
+
+    // ── Load interns ──────────────────────────────────────────
+    try {
+      allInterns = await InternsService.getAll();
+      renderInterns(allInterns);
+
+      // Stats
+      const active  = allInterns.filter(i => {
+        const t = parseInt(i.tasks_total||0), c = parseInt(i.tasks_completed||0);
+        return t > 0 && c === t;
+      }).length;
+      const review  = allInterns.filter(i => parseInt(i.tasks_submitted||0) > 0).length;
+      const pending = allInterns.length - active - review;
+
+      document.getElementById('statTotal').textContent   = allInterns.length;
+      document.getElementById('statActive').textContent  = active;
+      document.getElementById('statReview').textContent  = review;
+      document.getElementById('statPending').textContent = Math.max(0, pending);
+
+      // Populate assign dropdown
+      const sel = document.getElementById('taskAssignTo');
+      allInterns.forEach(i => {
+        const opt = document.createElement('option');
+        opt.value = i.id;
+        opt.textContent = `${i.full_name} — ${i.department || '—'}`;
+        sel.appendChild(opt);
+      });
+    } catch(e) {
+      document.getElementById('internBody').innerHTML = '<tr><td colspan="6" class="loading-cell">Could not load interns.</td></tr>';
+    }
+
+    function renderInterns(data) {
+      const tbody = document.getElementById('internBody');
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="6" class="loading-cell">No interns found.</td></tr>'; return; }
+      tbody.innerHTML = data.map(i => {
+        const total     = parseInt(i.tasks_total    || 0);
+        const completed = parseInt(i.tasks_completed|| 0);
+        const submitted = parseInt(i.tasks_submitted|| 0);
+        const progress  = total > 0 ? Math.round((completed / total) * 100) : 0;
+        const score     = parseFloat(i.overall_score ?? 0).toFixed(1);
+        let label, cls;
+        if (total === 0)           { label = 'Pending';  cls = 'sb-pending'; }
+        else if (completed===total){ label = 'Active';   cls = 'sb-active';  }
+        else if (submitted > 0)    { label = 'Review';   cls = 'sb-review';  }
+        else                       { label = 'Pending';  cls = 'sb-pending'; }
+        const av = (i.full_name||'').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+        return `<tr>
+          <td><div class="intern-name-cell"><div class="intern-av">${av}</div>${esc(i.full_name)}</div></td>
+          <td style="color:var(--text2)">${esc(i.department||'—')}</td>
+          <td><div style="display:flex;align-items:center;gap:.5rem"><div class="progress-mini"><div class="progress-mini-fill" style="width:${progress}%"></div></div><span style="font-size:.72rem;color:var(--text2)">${progress}%</span></div></td>
+          <td style="font-weight:700;color:var(--orange)">${score}</td>
+          <td><span class="status-badge ${cls}">${label}</span></td>
+          <td><button class="action-btn view-btn" data-id="${i.id}">View</button></td>
+        </tr>`;
+      }).join('');
+      tbody.querySelectorAll('.view-btn').forEach(btn =>
+        btn.addEventListener('click', () => viewIntern(parseInt(btn.dataset.id)))
+      );
+    }
+
+    window.filterInterns = (val) => {
+      const q = val.toLowerCase();
+      renderInterns(allInterns.filter(i =>
+        (i.full_name||'').toLowerCase().includes(q) || (i.department||'').toLowerCase().includes(q)
+      ));
+    };
+
+    // ── Assign task modal ─────────────────────────────────────
+    document.getElementById('openAssignModal')?.addEventListener('click', () => document.getElementById('assignModal').classList.add('open'));
+    document.getElementById('assignTaskBtn')?.addEventListener('click',   () => document.getElementById('assignModal').classList.add('open'));
+    document.getElementById('closeModal')?.addEventListener('click',  () => document.getElementById('assignModal').classList.remove('open'));
+    document.getElementById('cancelModal')?.addEventListener('click', () => document.getElementById('assignModal').classList.remove('open'));
+    document.getElementById('assignModal')?.addEventListener('click', e => { if (e.target===e.currentTarget) document.getElementById('assignModal').classList.remove('open'); });
+
+    document.getElementById('submitTask')?.addEventListener('click', async () => {
+      const title    = document.getElementById('taskTitle').value.trim();
+      const category = document.getElementById('taskCategory').value;
+      const assignTo = document.getElementById('taskAssignTo').value;
+      const priority = document.getElementById('taskPriority').value;
+      const dueDate  = document.getElementById('taskDueDate').value;
+      const desc     = document.getElementById('taskDescription').value.trim();
+      const errEl    = document.getElementById('modalError');
+      if (!title || !category || !assignTo) { errEl.textContent='Please fill Title, Category and Assign To.'; errEl.style.display='block'; return; }
+      errEl.style.display = 'none';
+      const btn = document.getElementById('submitTask');
+      btn.disabled = true; btn.textContent = 'Assigning…';
+      try {
+        await TasksService.create({ title, description:desc, category, priority, assigned_to:parseInt(assignTo), due_date:dueDate||undefined });
+        document.getElementById('assignModal').classList.remove('open');
+        showToast('✅ Task assigned!');
+      } catch(e) { errEl.textContent = e.message||'Failed.'; errEl.style.display='block'; }
+      finally { btn.disabled=false; btn.textContent='Assign Task →'; }
+    });
+
+    // ── Intern detail modal ───────────────────────────────────
+    async function viewIntern(id) {
+      const modal = document.getElementById('internDetailModal');
+      document.getElementById('idmLoading').style.display = '';
+      document.getElementById('idmContent').style.display = 'none';
+      document.getElementById('idmError').style.display   = 'none';
+      modal.classList.add('open');
+      try {
+        const { intern, tasks, feedback } = await InternsService.getById(id);
+        const fullName  = `${intern.first_name} ${intern.last_name}`.trim();
+        const completed = tasks?.filter(t=>t.status==='approved').length ?? parseInt(intern.tasks_completed??0);
+        const total     = tasks?.filter(t=>t.status!=='rejected').length ?? parseInt(intern.tasks_total??0);
+        const pct       = total > 0 ? Math.round((completed/total)*100) : 0;
+
+        document.getElementById('idmAvatar').textContent   = `${(intern.first_name||'')[0]}${(intern.last_name||'')[0]}`.toUpperCase();
+        document.getElementById('idmName').textContent     = fullName;
+        document.getElementById('idmEmail').textContent    = intern.email || '';
+        document.getElementById('idmDept').textContent     = intern.department || '—';
+        document.getElementById('idmOrg').textContent      = intern.organization || '—';
+        document.getElementById('idmUni').textContent      = intern.university || '—';
+        document.getElementById('idmSup').textContent      = intern.supervisor_name || '—';
+        document.getElementById('idmScore').textContent    = parseFloat(intern.overall_score??0).toFixed(1);
+        document.getElementById('idmPct').textContent      = `${pct}%`;
+        document.getElementById('idmProgFill').style.width = `${pct}%`;
+        document.getElementById('idmCompleted').textContent= `${completed} of ${total} task${total!==1?'s':''} approved`;
+        const fmt = d => d ? new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '—';
+        document.getElementById('idmDates').textContent = `${fmt(intern.start_date)} → ${fmt(intern.end_date)}`;
+
+        const stColor = { pending:'var(--text2)', submitted:'#60a5fa', approved:'#27c93f', revision:'var(--orange)', rejected:'#ff4444' };
+        const stLabel = { pending:'Pending', submitted:'Submitted', approved:'Approved', revision:'Revision', rejected:'Rejected' };
+        document.getElementById('idmTasks').innerHTML = !tasks?.length
+          ? '<div style="color:var(--text3);font-size:.82rem;">No tasks assigned yet.</div>'
+          : tasks.map(t=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--border)"><div><div style="font-size:.85rem;font-weight:600">${esc(t.title||'—')}</div><div style="font-size:.72rem;color:var(--text3)">${esc(t.category||'—')}</div></div><span style="font-size:.72rem;font-weight:700;color:${stColor[t.status]||'var(--text2)'}">${stLabel[t.status]||t.status}</span></div>`).join('');
+        document.getElementById('idmFeedback').innerHTML = !feedback?.length
+          ? '<div style="color:var(--text3);font-size:.82rem;">No feedback given yet.</div>'
+          : feedback.map(f=>{const s=Math.round(f.rating||0);return `<div style="background:var(--bg3);border-radius:10px;padding:.8rem;margin-bottom:.6rem"><div style="display:flex;justify-content:space-between;margin-bottom:.3rem"><span style="font-size:.82rem;font-weight:600">${esc(f.task_title||'—')}</span><span style="color:#f59e0b">${'★'.repeat(s)}${'☆'.repeat(5-s)}</span></div><div style="font-size:.78rem;color:var(--text2);font-style:italic">"${esc(f.comment||'No comment.')}"</div><div style="font-size:.68rem;color:var(--text3);margin-top:.3rem">by ${esc(f.given_by_name||'—')} · ${f.created_at?new Date(f.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):''}</div></div>`;}).join('');
+
+        document.getElementById('idmLoading').style.display = 'none';
+        document.getElementById('idmContent').style.display = '';
+      } catch(e) {
+        document.getElementById('idmLoading').style.display  = 'none';
+        document.getElementById('idmError').style.display    = '';
+        document.getElementById('idmErrorMsg').textContent   = e.message || 'Could not load intern details.';
+      }
+    }
+
+    document.getElementById('closeInternDetailModal')?.addEventListener('click',       () => document.getElementById('internDetailModal').classList.remove('open'));
+    document.getElementById('closeInternDetailModalFooter')?.addEventListener('click', () => document.getElementById('internDetailModal').classList.remove('open'));
+    document.getElementById('internDetailModal')?.addEventListener('click', e => { if(e.target===e.currentTarget) document.getElementById('internDetailModal').classList.remove('open'); });
+
+    function showToast(msg) {
+      let t = document.getElementById('toast');
+      if (!t) { t = document.createElement('div'); t.id='toast'; t.style.cssText='position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.3rem;box-shadow:0 20px 60px rgba(0,0,0,.3);font-size:.88rem;transform:translateY(100px);opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);'; document.body.appendChild(t); }
+      t.textContent = msg;
+      setTimeout(() => { t.style.transform='translateY(0)'; t.style.opacity='1'; }, 10);
+      setTimeout(() => { t.style.transform='translateY(100px)'; t.style.opacity='0'; }, 3500);
+    }
+    function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  </script>
+</body>
+</html>

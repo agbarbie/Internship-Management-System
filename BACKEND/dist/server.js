@@ -34,9 +34,9 @@ app.get('/api/health', (_req, res) => {
     });
 });
 // ── FALLBACK — serve landing page for all other routes
-app.get('*path', (_req, res) => {
-    res.sendFile(path_1.default.join(__dirname, '../public', 'landing', 'landingpage.html'));
-});
+// app.get('*path', (_req: Request, res: Response) => {
+//   res.sendFile(path.join(__dirname, '../public', 'landing', 'landingpage.html'));
+// });
 // ── START SERVER ──────────────────────────────────
 app.listen(PORT, () => {
     console.log(`🚀  InternHub server running at http://localhost:${PORT}`);

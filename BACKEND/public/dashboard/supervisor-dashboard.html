@@ -23,26 +23,26 @@
       <a class="nav-item active" href="supervisor-dashboard.html">
         <span class="nav-item-icon">📊</span> Dashboard
       </a>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="/interns/my-interns.html">
         <span class="nav-item-icon">👥</span> My Interns
       </a>
       <a class="nav-item" href="#" id="reviewsLink">
         <span class="nav-item-icon">✅</span> Pending Reviews
-        <span class="nav-badge" id="reviewBadge">0</span>
+        <span class="nav-badge" id="reviewBadge" style="display:none">0</span>
       </a>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="/interns/all-tasks.html">
         <span class="nav-item-icon">📋</span> All Tasks
       </a>
       <div class="nav-section-label">Management</div>
       <a class="nav-item" href="#" id="assignTaskBtn">
         <span class="nav-item-icon">➕</span> Assign Task
       </a>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="/reports/reports.html">
         <span class="nav-item-icon">📈</span> Reports
       </a>
-      <a class="nav-item" href="#">
+      <a class="nav-item" href="/notifications/notifications.html">
         <span class="nav-item-icon">🔔</span> Notifications
-        <span class="nav-badge" id="notifBadge">0</span>
+        <span class="nav-badge" id="notifBadge" style="display:none">0</span>
       </a>
       <div class="nav-section-label">Account</div>
       <a class="nav-item" href="#">
@@ -56,8 +56,17 @@
           <div class="user-mini-name" id="sidebarName">Loading...</div>
           <div class="user-mini-role" id="sidebarRole">Supervisor</div>
         </div>
-        <button class="logout-btn" id="logoutBtn" title="Logout">⏻</button>
       </div>
+      <button class="logout-btn" id="logoutBtn" title="Logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span>Logout</span>
+      </button>
     </div>
   </aside>
   <div class="overlay" id="overlay"></div>
@@ -100,30 +109,22 @@
             <label>Category *</label>
             <select id="taskCategory">
               <option value="">Select category</option>
-              <option>Design</option>
-              <option>Development</option>
-              <option>Data Science</option>
-              <option>Report</option>
-              <option>Marketing</option>
-              <option>Finance</option>
-              <option>Other</option>
+              <option>Design</option><option>Development</option>
+              <option>Data Science</option><option>Report</option>
+              <option>Marketing</option><option>Finance</option><option>Other</option>
             </select>
           </div>
           <div class="form-group">
             <label>Priority</label>
             <select id="taskPriority">
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
-              <option value="high">High</option>
-              <option value="urgent">Urgent</option>
+              <option value="medium">Medium</option><option value="low">Low</option>
+              <option value="high">High</option><option value="urgent">Urgent</option>
             </select>
           </div>
         </div>
         <div class="form-group">
           <label>Assign To *</label>
-          <select id="taskAssignTo">
-            <option value="">Select intern...</option>
-          </select>
+          <select id="taskAssignTo"><option value="">Select intern...</option></select>
         </div>
         <div class="form-group">
           <label>Due Date</label>
@@ -168,9 +169,61 @@
         <div class="modal-error" id="reviewError"></div>
       </div>
       <div class="modal-footer">
-        <button class="btn-reject"  id="rejectBtn">❌ Reject</button>
+        <button class="btn-reject"   id="rejectBtn">❌ Reject</button>
         <button class="btn-revision" id="revisionBtn">🔄 Request Revision</button>
-        <button class="btn-approve" id="approveBtn">✅ Approve</button>
+        <button class="btn-approve"  id="approveBtn">✅ Approve</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERN DETAIL MODAL -->
+  <div class="modal-backdrop" id="internDetailModal">
+    <div class="modal" style="max-width:680px;">
+      <div class="modal-header">
+        <h2>Intern Profile</h2>
+        <button class="modal-close" id="closeInternDetailModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="idmLoading" style="text-align:center;padding:2.5rem;color:var(--text3);">Loading details…</div>
+        <div id="idmError" style="display:none;background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.25);border-radius:10px;padding:1rem;color:#ff6b6b;font-size:.85rem;">
+          ⚠️ <span id="idmErrorMsg">Could not load intern details.</span>
+        </div>
+        <div id="idmContent" style="display:none;">
+          <div class="idm-hero">
+            <div class="idm-avatar" id="idmAvatar">??</div>
+            <div class="idm-info">
+              <h3 id="idmName">—</h3>
+              <p  id="idmEmail">—</p>
+              <div class="idm-chips">
+                <span class="idm-chip">📁 <span id="idmDept">—</span></span>
+                <span class="idm-chip">🏢 <span id="idmOrg">—</span></span>
+                <span class="idm-chip">🎓 <span id="idmUni">—</span></span>
+                <span class="idm-chip">👔 <span id="idmSup">—</span></span>
+              </div>
+            </div>
+          </div>
+          <div class="idm-grid">
+            <div class="idm-card">
+              <div class="idm-card-label">Overall Score</div>
+              <div class="idm-score" id="idmScore">—</div>
+              <div style="font-size:.7rem;color:var(--text3);">out of 5.0</div>
+            </div>
+            <div class="idm-card">
+              <div class="idm-card-label">Task Progress</div>
+              <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;" id="idmPct">—</div>
+              <div class="idm-prog-bar"><div class="idm-prog-fill" id="idmProgFill" style="width:0%;"></div></div>
+              <div style="font-size:.72rem;color:var(--text2);" id="idmCompleted">0 / 0 tasks</div>
+            </div>
+          </div>
+          <div style="font-size:.78rem;color:var(--text3);margin-bottom:1rem;">📅 <span id="idmDates">—</span></div>
+          <div class="idm-section-title">📋 Assigned Tasks</div>
+          <div class="idm-scroll" id="idmTasks"><div style="color:var(--text3);font-size:.82rem;">Loading…</div></div>
+          <div class="idm-section-title" style="margin-top:1rem;">💬 Feedback Given</div>
+          <div class="idm-scroll" id="idmFeedback"><div style="color:var(--text3);font-size:.82rem;">Loading…</div></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" id="closeInternDetailModalFooter">Close</button>
       </div>
     </div>
   </div>
@@ -178,43 +231,30 @@
   <!-- MAIN -->
   <main class="main">
     <div class="main-inner">
-
-      <!-- STAT CARDS -->
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-card-top">
-            <div class="stat-icon orange">👥</div>
-          </div>
+          <div class="stat-card-top"><div class="stat-icon orange">👥</div></div>
           <div class="stat-num" id="statInterns">—</div>
           <div class="stat-label">Total Interns</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card-top">
-            <div class="stat-icon blue">📋</div>
-          </div>
+          <div class="stat-card-top"><div class="stat-icon blue">📋</div></div>
           <div class="stat-num" id="statTasks">—</div>
           <div class="stat-label">Tasks Assigned</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card-top">
-            <div class="stat-icon orange">⏳</div>
-          </div>
+          <div class="stat-card-top"><div class="stat-icon orange">⏳</div></div>
           <div class="stat-num" id="statPending">—</div>
           <div class="stat-label">Pending Reviews</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card-top">
-            <div class="stat-icon green">✅</div>
-          </div>
+          <div class="stat-card-top"><div class="stat-icon green">✅</div></div>
           <div class="stat-num" id="statApproved">—</div>
           <div class="stat-label">Approved Tasks</div>
         </div>
       </div>
 
-      <!-- TOP GRID -->
       <div class="dash-grid">
-
-        <!-- INTERNS TABLE -->
         <div class="widget">
           <div class="widget-header">
             <div class="widget-title">My Interns</div>
@@ -226,14 +266,7 @@
           <div style="overflow-x:auto;">
             <table class="interns-table">
               <thead>
-                <tr>
-                  <th>Intern</th>
-                  <th>Department</th>
-                  <th>Progress</th>
-                  <th>Score</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
+                <tr><th>Intern</th><th>Department</th><th>Progress</th><th>Score</th><th>Status</th><th>Action</th></tr>
               </thead>
               <tbody id="internBody">
                 <tr><td colspan="6" class="loading-cell">Loading interns...</td></tr>
@@ -241,63 +274,43 @@
             </table>
           </div>
         </div>
-
-        <!-- RIGHT PANEL -->
         <div style="display:flex;flex-direction:column;gap:1.5rem;">
-
-          <!-- PENDING REVIEWS -->
           <div class="widget">
             <div class="widget-header">
               <div class="widget-title">Pending Reviews</div>
               <span class="review-count" id="reviewCount">0</span>
             </div>
-            <div class="review-list" id="reviewList">
-              <div class="loading-state">Loading...</div>
-            </div>
+            <div class="review-list" id="reviewList"><div class="loading-state">Loading...</div></div>
           </div>
-
-          <!-- NOTIFICATIONS -->
           <div class="widget">
             <div class="widget-header">
               <div class="widget-title">Notifications</div>
               <button class="widget-action" id="markReadBtn">Mark all read</button>
             </div>
-            <div class="notif-list" id="notifList">
-              <div class="loading-state">Loading...</div>
-            </div>
+            <div class="notif-list" id="notifList"><div class="loading-state">Loading...</div></div>
           </div>
-
         </div>
       </div>
 
-      <!-- BOTTOM GRID -->
       <div class="dash-grid2">
-
-        <!-- LEADERBOARD -->
         <div class="widget">
-          <div class="widget-header">
-            <div class="widget-title">🏆 Intern Leaderboard</div>
-          </div>
-          <div class="leaderboard-list" id="leaderboard">
-            <div class="loading-state">Loading...</div>
-          </div>
+          <div class="widget-header"><div class="widget-title">🏆 Intern Leaderboard</div></div>
+          <div class="leaderboard-list" id="leaderboard"><div class="loading-state">Loading...</div></div>
         </div>
-
-        <!-- ACTIVITY -->
         <div class="widget">
-          <div class="widget-header">
-            <div class="widget-title">Recent Activity</div>
-          </div>
-          <div class="activity-list" id="activityFeed">
-            <div class="loading-state">Loading...</div>
-          </div>
+          <div class="widget-header"><div class="widget-title">Recent Activity</div></div>
+          <div class="activity-list" id="activityFeed"><div class="loading-state">Loading...</div></div>
         </div>
-
       </div>
-
     </div>
   </main>
 
   <script type="module" src="supervisor-dashboard.js"></script>
+  <script>
+    document.getElementById('closeInternDetailModalFooter')
+      ?.addEventListener('click', () => {
+        document.getElementById('internDetailModal').classList.remove('open');
+      });
+  </script>
 </body>
 </html>

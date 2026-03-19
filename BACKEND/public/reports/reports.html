@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reports — InternHub</title>
+  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dashboard/supervisor-dashboard.css"/>
+  <style>
+    .report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;margin-bottom:1.5rem;}
+    .report-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.4rem;}
+    .report-card-title{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:1rem;}
+    .bar-row{display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem;}
+    .bar-label{font-size:.78rem;color:var(--text2);min-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .bar-track{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;}
+    .bar-fill{height:100%;border-radius:3px;background:var(--orange);transition:width .6s ease;}
+    .bar-val{font-size:.72rem;font-weight:700;color:var(--text2);min-width:32px;text-align:right;}
+    .summary-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--orange);}
+    .summary-label{font-size:.78rem;color:var(--text2);margin-top:.2rem;}
+    .summary-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
+    .donut-wrap{display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;}
+    .donut-svg{width:110px;height:110px;}
+    .legend-item{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--text2);margin-bottom:.4rem;}
+    .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  </style>
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <a href="/landing/landingpage.html"><div class="logo-dot"></div>Intern<span>Hub</span></a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Overview</div>
+      <a class="nav-item" href="/dashboard/supervisor-dashboard.html"><span class="nav-item-icon">📊</span> Dashboard</a>
+      <a class="nav-item" href="/interns/my-interns.html"><span class="nav-item-icon">👥</span> My Interns</a>
+      <a class="nav-item" href="/dashboard/supervisor-dashboard.html#reviews"><span class="nav-item-icon">✅</span> Pending Reviews</a>
+      <a class="nav-item" href="/interns/all-tasks.html"><span class="nav-item-icon">📋</span> All Tasks</a>
+      <div class="nav-section-label">Management</div>
+      <a class="nav-item" href="#"><span class="nav-item-icon">➕</span> Assign Task</a>
+      <a class="nav-item active" href="/reports/reports.html"><span class="nav-item-icon">📈</span> Reports</a>
+      <a class="nav-item" href="/notifications/notifications.html"><span class="nav-item-icon">🔔</span> Notifications</a>
+      <div class="nav-section-label">Account</div>
+      <a class="nav-item" href="#"><span class="nav-item-icon">⚙️</span> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-mini">
+        <div class="user-avatar-sm" id="sidebarAvatar">?</div>
+        <div class="user-mini-info">
+          <div class="user-mini-name" id="sidebarName">Loading...</div>
+          <div class="user-mini-role" id="sidebarRole">Supervisor</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logoutBtn" title="Logout">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+  <div class="overlay" id="overlay"></div>
+
+  <header class="topbar">
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <button class="hamburger-top" id="hamburgerTop"><span></span><span></span><span></span></button>
+      <div class="topbar-left"><h2>Reports</h2><p>Internship program overview</p></div>
+    </div>
+    <div class="topbar-right">
+      <button class="theme-toggle" id="themeToggle"></button>
+      <div class="topbar-avatar" id="topAvatar">?</div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="main-inner">
+
+      <!-- Summary stats -->
+      <div class="stats-grid" style="margin-bottom:1.5rem;">
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon orange">👥</div></div><div class="stat-num" id="rTotalInterns">—</div><div class="stat-label">Total Interns</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon blue">📋</div></div><div class="stat-num" id="rTotalTasks">—</div><div class="stat-label">Total Tasks</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon green">✅</div></div><div class="stat-num" id="rApproved">—</div><div class="stat-label">Approved</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon orange">⭐</div></div><div class="stat-num" id="rAvgScore">—</div><div class="stat-label">Avg. Score</div></div>
+      </div>
+
+      <div class="report-grid">
+
+        <!-- Task status breakdown donut -->
+        <div class="report-card">
+          <div class="report-card-title">📊 Task Status Breakdown</div>
+          <div class="donut-wrap">
+            <svg class="donut-svg" viewBox="0 0 42 42">
+              <circle cx="21" cy="21" r="15.91" fill="none" stroke="var(--bg3)" stroke-width="5"/>
+              <circle cx="21" cy="21" r="15.91" fill="none" stroke="#27c93f" stroke-width="5"
+                stroke-dasharray="0 100" stroke-dashoffset="25" id="donutApproved" style="transition:stroke-dasharray .8s ease"/>
+              <circle cx="21" cy="21" r="15.91" fill="none" stroke="var(--orange)" stroke-width="5"
+                stroke-dasharray="0 100" stroke-dashoffset="25" id="donutPending" style="transition:stroke-dasharray .8s ease"/>
+              <circle cx="21" cy="21" r="15.91" fill="none" stroke="#60a5fa" stroke-width="5"
+                stroke-dasharray="0 100" stroke-dashoffset="25" id="donutSubmitted" style="transition:stroke-dasharray .8s ease"/>
+              <text x="21" y="23" text-anchor="middle" style="font-family:'Syne',sans-serif;font-size:5px;font-weight:800;fill:var(--text)" id="donutPct">0%</text>
+            </svg>
+            <div>
+              <div class="legend-item"><div class="legend-dot" style="background:#27c93f"></div>Approved: <strong id="lgApproved" style="margin-left:.3rem">0</strong></div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--orange)"></div>Pending: <strong id="lgPending" style="margin-left:.3rem">0</strong></div>
+              <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>Submitted: <strong id="lgSubmitted" style="margin-left:.3rem">0</strong></div>
+              <div class="legend-item"><div class="legend-dot" style="background:#ff6b6b"></div>Revision: <strong id="lgRevision" style="margin-left:.3rem">0</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top performers -->
+        <div class="report-card">
+          <div class="report-card-title">🏆 Top Performers</div>
+          <div id="topPerformers"><div class="loading-state" style="padding:1rem;">Loading…</div></div>
+        </div>
+
+        <!-- Task completion by intern -->
+        <div class="report-card" style="grid-column:1/-1;">
+          <div class="report-card-title">📋 Task Completion by Intern</div>
+          <div id="completionBars"><div class="loading-state" style="padding:1rem;">Loading…</div></div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { AuthService, InternsService, TasksService } from '../services/api.js';
+
+    if (!AuthService.isLoggedIn()) { window.location.href = '/login/login.html'; }
+    const user = AuthService.getCurrentUser();
+    if (user?.role === 'intern') { window.location.href = '/dashboard/intern-dashboard.html'; }
+
+    document.getElementById('themeToggle')?.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next);
+    });
+    document.getElementById('hamburgerTop')?.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
+    });
+    document.getElementById('overlay')?.addEventListener('click', () => {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
+    });
+    document.getElementById('logoutBtn')?.addEventListener('click', () => AuthService.logout());
+
+    const initials = AuthService.getInitials();
+    document.getElementById('sidebarAvatar').textContent = initials;
+    document.getElementById('topAvatar').textContent     = initials;
+    document.getElementById('sidebarName').textContent   = AuthService.getDisplayName();
+    document.getElementById('sidebarRole').textContent   = `Supervisor · ${user?.organization || 'InternHub'}`;
+
+    try {
+      const [interns, tasks] = await Promise.all([InternsService.getAll(), TasksService.getAll()]);
+
+      // Summary stats
+      const approved  = tasks.filter(t => t.status === 'approved').length;
+      const pending   = tasks.filter(t => t.status === 'pending').length;
+      const submitted = tasks.filter(t => t.status === 'submitted').length;
+      const revision  = tasks.filter(t => t.status === 'revision').length;
+      const avgScore  = interns.length
+        ? (interns.reduce((s,i) => s + parseFloat(i.overall_score||0), 0) / interns.length).toFixed(1)
+        : '—';
+
+      document.getElementById('rTotalInterns').textContent = interns.length;
+      document.getElementById('rTotalTasks').textContent   = tasks.length;
+      document.getElementById('rApproved').textContent     = approved;
+      document.getElementById('rAvgScore').textContent     = avgScore;
+
+      // Donut
+      const total = tasks.length || 1;
+      const aArc  = Math.round((approved  / total) * 100);
+      const pArc  = Math.round((pending   / total) * 100);
+      const sArc  = Math.round((submitted / total) * 100);
+      setTimeout(() => {
+        document.getElementById('donutApproved').setAttribute('stroke-dasharray',  `${aArc} ${100-aArc}`);
+        document.getElementById('donutPending').setAttribute('stroke-dasharray',   `${pArc} ${100-pArc}`);
+        document.getElementById('donutPending').setAttribute('stroke-dashoffset',  `${25 - aArc}`);
+        document.getElementById('donutSubmitted').setAttribute('stroke-dasharray', `${sArc} ${100-sArc}`);
+        document.getElementById('donutSubmitted').setAttribute('stroke-dashoffset',`${25 - aArc - pArc}`);
+        document.getElementById('donutPct').textContent = `${aArc}%`;
+      }, 200);
+      document.getElementById('lgApproved').textContent  = approved;
+      document.getElementById('lgPending').textContent   = pending;
+      document.getElementById('lgSubmitted').textContent = submitted;
+      document.getElementById('lgRevision').textContent  = revision;
+
+      // Top performers
+      const sorted = [...interns].sort((a,b) => (b.overall_score||0) - (a.overall_score||0));
+      document.getElementById('topPerformers').innerHTML = sorted.slice(0,5).map((i, idx) => {
+        const medals = ['🥇','🥈','🥉'];
+        const score  = parseFloat(i.overall_score??0).toFixed(1);
+        const av     = (i.full_name||'').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+        return `<div style="display:flex;align-items:center;gap:.8rem;padding:.6rem 0;border-bottom:1px solid var(--border)">
+          <div style="font-size:1.1rem;width:24px;text-align:center">${medals[idx]||idx+1}</div>
+          <div style="width:30px;height:30px;border-radius:8px;background:var(--orange-glow);border:1px solid rgba(255,107,0,.25);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--orange)">${av}</div>
+          <div style="flex:1"><div style="font-size:.85rem;font-weight:600">${i.full_name}</div><div style="font-size:.7rem;color:var(--text3)">${i.department||'—'}</div></div>
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:var(--orange)">${score}</div>
+        </div>`;
+      }).join('');
+
+      // Completion bars
+      const maxTasks = Math.max(...interns.map(i => parseInt(i.tasks_total||0)), 1);
+      document.getElementById('completionBars').innerHTML = interns.map(i => {
+        const total     = parseInt(i.tasks_total    || 0);
+        const completed = parseInt(i.tasks_completed|| 0);
+        const pct       = total > 0 ? Math.round((completed/total)*100) : 0;
+        return `<div class="bar-row">
+          <div class="bar-label" title="${i.full_name}">${i.full_name}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+          <div class="bar-val">${pct}%</div>
+          <div style="font-size:.7rem;color:var(--text3);min-width:50px;text-align:right">${completed}/${total}</div>
+        </div>`;
+      }).join('') || '<div style="color:var(--text3);font-size:.82rem;">No data yet.</div>';
+
+    } catch(e) {
+      console.error(e);
+    }
+  </script>
+</body>
+</html>

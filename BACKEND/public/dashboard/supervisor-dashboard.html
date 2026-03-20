@@ -3,48 +3,31 @@
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Supervisor Dashboard — InternHub</title>
-  <script>
-    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'dark');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <link rel="stylesheet" href="supervisor-dashboard.css"/>
 </head>
 <body>
 
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <a href="../landing/landingpage.html">
-        <div class="logo-dot"></div>Intern<span>Hub</span>
+        <div class="logo-icon"><i class="fa-solid fa-layer-group"></i></div>Intern<span>Hub</span>
       </a>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Overview</div>
-      <a class="nav-item active" href="supervisor-dashboard.html">
-        <span class="nav-item-icon">📊</span> Dashboard
-      </a>
-      <a class="nav-item" href="/interns/my-interns.html">
-        <span class="nav-item-icon">👥</span> My Interns
-      </a>
-      <a class="nav-item" href="#" id="reviewsLink">
-        <span class="nav-item-icon">✅</span> Pending Reviews
-        <span class="nav-badge" id="reviewBadge" style="display:none">0</span>
-      </a>
-      <a class="nav-item" href="/interns/all-tasks.html">
-        <span class="nav-item-icon">📋</span> All Tasks
-      </a>
+      <a class="nav-item active" href="supervisor-dashboard.html"><i class="fa-solid fa-chart-pie nav-item-icon"></i> Dashboard</a>
+      <a class="nav-item" href="/interns/my-interns.html"><i class="fa-solid fa-users nav-item-icon"></i> My Interns</a>
+      <a class="nav-item" href="#" id="reviewsLink"><i class="fa-solid fa-circle-check nav-item-icon"></i> Pending Reviews<span class="nav-badge" id="reviewBadge" style="display:none">0</span></a>
+      <a class="nav-item" href="/interns/all-tasks.html"><i class="fa-solid fa-clipboard-list nav-item-icon"></i> All Tasks</a>
       <div class="nav-section-label">Management</div>
-      <a class="nav-item" href="#" id="assignTaskBtn">
-        <span class="nav-item-icon">➕</span> Assign Task
-      </a>
-      <a class="nav-item" href="/reports/reports.html">
-        <span class="nav-item-icon">📈</span> Reports
-      </a>
-      
+      <a class="nav-item" href="#" id="assignTaskBtn"><i class="fa-solid fa-plus nav-item-icon"></i> Assign Task</a>
+      <a class="nav-item" href="/reports/reports.html"><i class="fa-solid fa-chart-line nav-item-icon"></i> Reports</a>
       <div class="nav-section-label">Account</div>
-      <a class="nav-item" href="#">
-        <span class="nav-item-icon">⚙️</span> Settings
-      </a>
+      <a class="nav-item" href="#"><i class="fa-solid fa-gear nav-item-icon"></i> Settings</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-mini">
@@ -54,37 +37,19 @@
           <div class="user-mini-role" id="sidebarRole">Supervisor</div>
         </div>
       </div>
-      <button class="logout-btn" id="logoutBtn" title="Logout">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.2"
-             stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-          <polyline points="16 17 21 12 16 7"/>
-          <line x1="21" y1="12" x2="9" y2="12"/>
-        </svg>
-        <span>Logout</span>
-      </button>
+      <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
     </div>
   </aside>
   <div class="overlay" id="overlay"></div>
 
-  <!-- TOP BAR -->
   <header class="topbar">
     <div style="display:flex;align-items:center;gap:1rem;">
-      <button class="hamburger-top" id="hamburgerTop">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="topbar-left">
-        <h2>Supervisor Dashboard</h2>
-        <p id="greetingText">Welcome back 👋</p>
-      </div>
+      <button class="hamburger-top" id="hamburgerTop"><span></span><span></span><span></span></button>
+      <div class="topbar-left"><h2>Supervisor Dashboard</h2><p id="greetingText">Welcome back</p></div>
     </div>
     <div class="topbar-right">
       <button class="theme-toggle" id="themeToggle"></button>
-      <div class="notif-btn" id="notifBtn">
-        <span>🔔</span>
-        <div class="notif-dot" id="notifDot" style="display:none"></div>
-      </div>
+      <div class="notif-btn" id="notifBtn"><i class="fa-solid fa-bell"></i><div class="notif-dot" id="notifDot" style="display:none"></div></div>
       <div class="topbar-avatar" id="topAvatar">?</div>
     </div>
   </header>
@@ -92,50 +57,25 @@
   <!-- ASSIGN TASK MODAL -->
   <div class="modal-backdrop" id="assignModal">
     <div class="modal">
-      <div class="modal-header">
-        <h2>Assign New Task</h2>
-        <button class="modal-close" id="closeModal">✕</button>
-      </div>
+      <div class="modal-header"><h2>Assign New Task</h2><button class="modal-close" id="closeModal"><i class="fa-solid fa-xmark"></i></button></div>
       <div class="modal-body">
-        <div class="form-group">
-          <label>Task Title *</label>
-          <input type="text" id="taskTitle" placeholder="e.g. Data Analysis Report"/>
-        </div>
+        <div class="form-group"><label>Task Title *</label><input type="text" id="taskTitle" placeholder="e.g. Data Analysis Report"/></div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Category *</label>
-            <select id="taskCategory">
-              <option value="">Select category</option>
-              <option>Design</option><option>Development</option>
-              <option>Data Science</option><option>Report</option>
-              <option>Marketing</option><option>Finance</option><option>Other</option>
-            </select>
+          <div class="form-group"><label>Category *</label>
+            <select id="taskCategory"><option value="">Select category</option><option>Design</option><option>Development</option><option>Data Science</option><option>Report</option><option>Marketing</option><option>Finance</option><option>Other</option></select>
           </div>
-          <div class="form-group">
-            <label>Priority</label>
-            <select id="taskPriority">
-              <option value="medium">Medium</option><option value="low">Low</option>
-              <option value="high">High</option><option value="urgent">Urgent</option>
-            </select>
+          <div class="form-group"><label>Priority</label>
+            <select id="taskPriority"><option value="medium">Medium</option><option value="low">Low</option><option value="high">High</option><option value="urgent">Urgent</option></select>
           </div>
         </div>
-        <div class="form-group">
-          <label>Assign To *</label>
-          <select id="taskAssignTo"><option value="">Select intern...</option></select>
-        </div>
-        <div class="form-group">
-          <label>Due Date</label>
-          <input type="date" id="taskDueDate"/>
-        </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea id="taskDescription" placeholder="Describe the task requirements..."></textarea>
-        </div>
+        <div class="form-group"><label>Assign To *</label><select id="taskAssignTo"><option value="">Select intern...</option></select></div>
+        <div class="form-group"><label>Due Date</label><input type="date" id="taskDueDate"/></div>
+        <div class="form-group"><label>Description</label><textarea id="taskDescription" placeholder="Describe the task requirements..."></textarea></div>
         <div class="modal-error" id="modalError"></div>
       </div>
       <div class="modal-footer">
         <button class="btn-cancel" id="cancelModal">Cancel</button>
-        <button class="btn-assign" id="submitTask">Assign Task →</button>
+        <button class="btn-assign" id="submitTask"><i class="fa-solid fa-paper-plane fa-sm"></i> Assign Task</button>
       </div>
     </div>
   </div>
@@ -143,32 +83,25 @@
   <!-- REVIEW MODAL -->
   <div class="modal-backdrop" id="reviewModal">
     <div class="modal">
-      <div class="modal-header">
-        <h2>Review Submission</h2>
-        <button class="modal-close" id="closeReviewModal">✕</button>
-      </div>
+      <div class="modal-header"><h2>Review Submission</h2><button class="modal-close" id="closeReviewModal"><i class="fa-solid fa-xmark"></i></button></div>
       <div class="modal-body">
         <div class="review-task-info" id="reviewTaskInfo"></div>
-        <div class="form-group" style="margin-top:1rem">
-          <label>Rating (1–5)</label>
+        <div class="form-group" style="margin-top:1rem"><label>Rating (1–5)</label>
           <div class="star-rating" id="starRating">
-            <span class="star" data-val="1">★</span>
-            <span class="star" data-val="2">★</span>
-            <span class="star" data-val="3">★</span>
-            <span class="star" data-val="4">★</span>
-            <span class="star" data-val="5">★</span>
+            <span class="star" data-val="1"><i class="fa-solid fa-star"></i></span>
+            <span class="star" data-val="2"><i class="fa-solid fa-star"></i></span>
+            <span class="star" data-val="3"><i class="fa-solid fa-star"></i></span>
+            <span class="star" data-val="4"><i class="fa-solid fa-star"></i></span>
+            <span class="star" data-val="5"><i class="fa-solid fa-star"></i></span>
           </div>
         </div>
-        <div class="form-group">
-          <label>Feedback Comment</label>
-          <textarea id="reviewComment" placeholder="Give constructive feedback..."></textarea>
-        </div>
+        <div class="form-group"><label>Feedback Comment</label><textarea id="reviewComment" placeholder="Give constructive feedback..."></textarea></div>
         <div class="modal-error" id="reviewError"></div>
       </div>
       <div class="modal-footer">
-        <button class="btn-reject"   id="rejectBtn">❌ Reject</button>
-        <button class="btn-revision" id="revisionBtn">🔄 Request Revision</button>
-        <button class="btn-approve"  id="approveBtn">✅ Approve</button>
+        <button class="btn-reject" id="rejectBtn"><i class="fa-solid fa-xmark fa-sm"></i> Reject</button>
+        <button class="btn-revision" id="revisionBtn"><i class="fa-solid fa-rotate fa-sm"></i> Request Revision</button>
+        <button class="btn-approve" id="approveBtn"><i class="fa-solid fa-check fa-sm"></i> Approve</button>
       </div>
     </div>
   </div>
@@ -176,138 +109,86 @@
   <!-- INTERN DETAIL MODAL -->
   <div class="modal-backdrop" id="internDetailModal">
     <div class="modal" style="max-width:680px;">
-      <div class="modal-header">
-        <h2>Intern Profile</h2>
-        <button class="modal-close" id="closeInternDetailModal">✕</button>
-      </div>
+      <div class="modal-header"><h2>Intern Profile</h2><button class="modal-close" id="closeInternDetailModal"><i class="fa-solid fa-xmark"></i></button></div>
       <div class="modal-body">
-        <div id="idmLoading" style="text-align:center;padding:2.5rem;color:var(--text3);">Loading details…</div>
-        <div id="idmError" style="display:none;background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.25);border-radius:10px;padding:1rem;color:#ff6b6b;font-size:.85rem;">
-          ⚠️ <span id="idmErrorMsg">Could not load intern details.</span>
-        </div>
-        <div id="idmContent" style="display:none;">
+        <div id="idmLoading" style="text-align:center;padding:2.5rem;color:var(--text3)">Loading details…</div>
+        <div id="idmError" style="display:none;background:rgba(255,60,60,.1);border:1px solid rgba(255,60,60,.25);border-radius:10px;padding:1rem;color:#ff6b6b;font-size:.85rem;"><i class="fa-solid fa-triangle-exclamation"></i> <span id="idmErrorMsg">Could not load intern details.</span></div>
+        <div id="idmContent" style="display:none">
           <div class="idm-hero">
             <div class="idm-avatar" id="idmAvatar">??</div>
             <div class="idm-info">
-              <h3 id="idmName">—</h3>
-              <p  id="idmEmail">—</p>
+              <h3 id="idmName">—</h3><p id="idmEmail">—</p>
               <div class="idm-chips">
-                <span class="idm-chip">📁 <span id="idmDept">—</span></span>
-                <span class="idm-chip">🏢 <span id="idmOrg">—</span></span>
-                <span class="idm-chip">🎓 <span id="idmUni">—</span></span>
-                <span class="idm-chip">👔 <span id="idmSup">—</span></span>
+                <span class="idm-chip"><i class="fa-solid fa-folder fa-xs"></i> <span id="idmDept">—</span></span>
+                <span class="idm-chip"><i class="fa-solid fa-building fa-xs"></i> <span id="idmOrg">—</span></span>
+                <span class="idm-chip"><i class="fa-solid fa-graduation-cap fa-xs"></i> <span id="idmUni">—</span></span>
+                <span class="idm-chip"><i class="fa-solid fa-briefcase fa-xs"></i> <span id="idmSup">—</span></span>
               </div>
             </div>
           </div>
           <div class="idm-grid">
-            <div class="idm-card">
-              <div class="idm-card-label">Overall Score</div>
-              <div class="idm-score" id="idmScore">—</div>
-              <div style="font-size:.7rem;color:var(--text3);">out of 5.0</div>
-            </div>
+            <div class="idm-card"><div class="idm-card-label">Overall Score</div><div class="idm-score" id="idmScore">—</div><div style="font-size:.7rem;color:var(--text3)">out of 5.0</div></div>
             <div class="idm-card">
               <div class="idm-card-label">Task Progress</div>
-              <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;" id="idmPct">—</div>
-              <div class="idm-prog-bar"><div class="idm-prog-fill" id="idmProgFill" style="width:0%;"></div></div>
-              <div style="font-size:.72rem;color:var(--text2);" id="idmCompleted">0 / 0 tasks</div>
+              <div style="font-family:'Raleway',sans-serif;font-size:1.6rem;font-weight:900;" id="idmPct">—</div>
+              <div class="idm-prog-bar"><div class="idm-prog-fill" id="idmProgFill" style="width:0%"></div></div>
+              <div style="font-size:.72rem;color:var(--text2)" id="idmCompleted">0 / 0 tasks</div>
             </div>
           </div>
-          <div style="font-size:.78rem;color:var(--text3);margin-bottom:1rem;">📅 <span id="idmDates">—</span></div>
-          <div class="idm-section-title">📋 Assigned Tasks</div>
-          <div class="idm-scroll" id="idmTasks"><div style="color:var(--text3);font-size:.82rem;">Loading…</div></div>
-          <div class="idm-section-title" style="margin-top:1rem;">💬 Feedback Given</div>
-          <div class="idm-scroll" id="idmFeedback"><div style="color:var(--text3);font-size:.82rem;">Loading…</div></div>
+          <div style="font-size:.78rem;color:var(--text3);margin-bottom:1rem"><i class="fa-regular fa-calendar fa-xs"></i> <span id="idmDates">—</span></div>
+          <div class="idm-section-title"><i class="fa-solid fa-clipboard-list fa-xs"></i> Assigned Tasks</div>
+          <div class="idm-scroll" id="idmTasks"><div style="color:var(--text3);font-size:.82rem">Loading…</div></div>
+          <div class="idm-section-title" style="margin-top:1rem"><i class="fa-solid fa-comments fa-xs"></i> Feedback Given</div>
+          <div class="idm-scroll" id="idmFeedback"><div style="color:var(--text3);font-size:.82rem">Loading…</div></div>
         </div>
       </div>
-      <div class="modal-footer">
-        <button class="btn-cancel" id="closeInternDetailModalFooter">Close</button>
-      </div>
+      <div class="modal-footer"><button class="btn-cancel" id="closeInternDetailModalFooter">Close</button></div>
     </div>
   </div>
 
-  <!-- MAIN -->
   <main class="main">
     <div class="main-inner">
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-card-top"><div class="stat-icon orange">👥</div></div>
-          <div class="stat-num" id="statInterns">—</div>
-          <div class="stat-label">Total Interns</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-top"><div class="stat-icon blue">📋</div></div>
-          <div class="stat-num" id="statTasks">—</div>
-          <div class="stat-label">Tasks Assigned</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-top"><div class="stat-icon orange">⏳</div></div>
-          <div class="stat-num" id="statPending">—</div>
-          <div class="stat-label">Pending Reviews</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-top"><div class="stat-icon green">✅</div></div>
-          <div class="stat-num" id="statApproved">—</div>
-          <div class="stat-label">Approved Tasks</div>
-        </div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon orange"><i class="fa-solid fa-users"></i></div></div><div class="stat-num" id="statInterns">—</div><div class="stat-label">Total Interns</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon blue"><i class="fa-solid fa-clipboard-list"></i></div></div><div class="stat-num" id="statTasks">—</div><div class="stat-label">Tasks Assigned</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon orange"><i class="fa-solid fa-hourglass-half"></i></div></div><div class="stat-num" id="statPending">—</div><div class="stat-label">Pending Reviews</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div></div><div class="stat-num" id="statApproved">—</div><div class="stat-label">Approved Tasks</div></div>
       </div>
-
       <div class="dash-grid">
         <div class="widget">
           <div class="widget-header">
             <div class="widget-title">My Interns</div>
             <div style="display:flex;gap:.7rem;align-items:center;">
-              <input type="text" class="search-bar" placeholder="🔍 Search..." id="internSearch" oninput="filterInterns(this.value)"/>
-              <button class="btn-primary-sm" id="openAssignModal">+ Assign Task</button>
+              <input type="text" class="search-bar" placeholder="Search..." id="internSearch" oninput="filterInterns(this.value)"/>
+              <button class="btn-primary-sm" id="openAssignModal"><i class="fa-solid fa-plus fa-xs"></i> Assign Task</button>
             </div>
           </div>
-          <div style="overflow-x:auto;">
+          <div style="overflow-x:auto">
             <table class="interns-table">
-              <thead>
-                <tr><th>Intern</th><th>Department</th><th>Progress</th><th>Score</th><th>Status</th><th>Action</th></tr>
-              </thead>
-              <tbody id="internBody">
-                <tr><td colspan="6" class="loading-cell">Loading interns...</td></tr>
-              </tbody>
+              <thead><tr><th>Intern</th><th>Department</th><th>Progress</th><th>Score</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody id="internBody"><tr><td colspan="6" class="loading-cell">Loading interns...</td></tr></tbody>
             </table>
           </div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:1.5rem;">
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
           <div class="widget">
-            <div class="widget-header">
-              <div class="widget-title">Pending Reviews</div>
-              <span class="review-count" id="reviewCount">0</span>
-            </div>
+            <div class="widget-header"><div class="widget-title">Pending Reviews</div><span class="review-count" id="reviewCount">0</span></div>
             <div class="review-list" id="reviewList"><div class="loading-state">Loading...</div></div>
           </div>
           <div class="widget">
-            <div class="widget-header">
-              <div class="widget-title">Notifications</div>
-              <button class="widget-action" id="markReadBtn">Mark all read</button>
-            </div>
+            <div class="widget-header"><div class="widget-title">Notifications</div><button class="widget-action" id="markReadBtn">Mark all read</button></div>
             <div class="notif-list" id="notifList"><div class="loading-state">Loading...</div></div>
           </div>
         </div>
       </div>
-
       <div class="dash-grid2">
-        <div class="widget">
-          <div class="widget-header"><div class="widget-title">🏆 Intern Leaderboard</div></div>
-          <div class="leaderboard-list" id="leaderboard"><div class="loading-state">Loading...</div></div>
-        </div>
-        <div class="widget">
-          <div class="widget-header"><div class="widget-title">Recent Activity</div></div>
-          <div class="activity-list" id="activityFeed"><div class="loading-state">Loading...</div></div>
-        </div>
+        <div class="widget"><div class="widget-header"><div class="widget-title"><i class="fa-solid fa-trophy" style="color:var(--orange);margin-right:.4rem"></i>Intern Leaderboard</div></div><div class="leaderboard-list" id="leaderboard"><div class="loading-state">Loading...</div></div></div>
+        <div class="widget"><div class="widget-header"><div class="widget-title">Recent Activity</div></div><div class="activity-list" id="activityFeed"><div class="loading-state">Loading...</div></div></div>
       </div>
     </div>
   </main>
 
   <script type="module" src="supervisor-dashboard.js"></script>
-  <script>
-    document.getElementById('closeInternDetailModalFooter')
-      ?.addEventListener('click', () => {
-        document.getElementById('internDetailModal').classList.remove('open');
-      });
-  </script>
+  <script>document.getElementById('closeInternDetailModalFooter')?.addEventListener('click',()=>document.getElementById('internDetailModal').classList.remove('open'));</script>
 </body>
 </html>

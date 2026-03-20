@@ -3,25 +3,26 @@
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Submissions — InternHub</title>
-  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'dark');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <link rel="stylesheet" href="../dashboard/intern-dashboard.css"/>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <a href="/landing/landingpage.html"><div class="logo-dot"></div>Intern<span>Hub</span></a>
+      <a href="/landing/landingpage.html"><div class="logo-icon"><i class="fa-solid fa-layer-group"></i></div>Intern<span>Hub</span></a>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Main</div>
-      <a class="nav-item" href="/dashboard/intern-dashboard.html"><span class="nav-item-icon">📊</span> Dashboard</a>
-      <a class="nav-item" href="/Tasks/tasks.html"><span class="nav-item-icon">📋</span> My Tasks</a>
-      <a class="nav-item active" href="/submissions/submissions.html"><span class="nav-item-icon">📁</span> My Submissions</a>
-      <a class="nav-item" href="/notifications/notifications.html"><span class="nav-item-icon">🔔</span> Notifications</a>
+      <a class="nav-item" href="/dashboard/intern-dashboard.html"><i class="fa-solid fa-chart-pie nav-item-icon"></i> Dashboard</a>
+      <a class="nav-item" href="/Tasks/tasks.html"><i class="fa-solid fa-clipboard-list nav-item-icon"></i> My Tasks</a>
+      <a class="nav-item active" href="/submissions/submissions.html"><i class="fa-solid fa-folder-open nav-item-icon"></i> My Submissions</a>
       <div class="nav-section-label">Profile</div>
-      <a class="nav-item" href="/profile/profile.html"><span class="nav-item-icon">👤</span> My Profile</a>
-      <a class="nav-item" href="/feedback/my-feedback.html"><span class="nav-item-icon">⭐</span> My Feedback</a>
-      <a class="nav-item" href="#"><span class="nav-item-icon">⚙️</span> Settings</a>
+      <a class="nav-item" href="/profile/profile.html"><i class="fa-solid fa-circle-user nav-item-icon"></i> My Profile</a>
+      <a class="nav-item" href="/feedback/my-feedback.html"><i class="fa-solid fa-star nav-item-icon"></i> My Feedback</a>
+      <a class="nav-item" href="#"><i class="fa-solid fa-gear nav-item-icon"></i> Settings</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-mini">
@@ -31,12 +32,7 @@
           <div class="user-mini-role" id="sidebarRole">Intern</div>
         </div>
       </div>
-      <button class="logout-btn" id="logoutBtn" title="Logout">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-        </svg>
-        <span>Logout</span>
-      </button>
+      <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
     </div>
   </aside>
   <div class="overlay" id="overlay"></div>
@@ -54,7 +50,7 @@
 
   <main class="main">
     <div class="main-inner">
-      <div id="submissionsList" style="display:flex;flex-direction:column;gap:1rem;">
+      <div id="submissionsList" style="display:flex;flex-direction:column;gap:1rem">
         <div class="loading-state">Loading submissions…</div>
       </div>
     </div>
@@ -64,56 +60,42 @@
     import { AuthService, TasksService } from '../services/api.js';
     if (!AuthService.isLoggedIn()) { window.location.href = '/login/login.html'; }
 
-    document.getElementById('themeToggle')?.addEventListener('click', () => {
-      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    });
-    document.getElementById('hamburgerTop')?.addEventListener('click', () => {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('overlay').classList.toggle('show');
-    });
-    document.getElementById('overlay')?.addEventListener('click', () => {
-      document.getElementById('sidebar').classList.remove('open');
-      document.getElementById('overlay').classList.remove('show');
-    });
+    document.getElementById('themeToggle')?.addEventListener('click', () => { const next=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'; document.documentElement.setAttribute('data-theme',next); localStorage.setItem('theme',next); });
+    document.getElementById('hamburgerTop')?.addEventListener('click', () => { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); });
+    document.getElementById('overlay')?.addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); });
     document.getElementById('logoutBtn')?.addEventListener('click', () => AuthService.logout());
+    document.getElementById('sidebarAvatar').textContent=AuthService.getInitials();
+    document.getElementById('topAvatar').textContent=AuthService.getInitials();
+    document.getElementById('sidebarName').textContent=AuthService.getDisplayName();
 
-    const initials = AuthService.getInitials();
-    document.getElementById('sidebarAvatar').textContent = initials;
-    document.getElementById('topAvatar').textContent     = initials;
-    document.getElementById('sidebarName').textContent   = AuthService.getDisplayName();
-
-    const stColor = { pending:'var(--orange)', submitted:'#60a5fa', approved:'#27c93f', revision:'#ff6b6b' };
-    const stLabel = { pending:'Pending', submitted:'Submitted', approved:'Approved', revision:'Needs Revision' };
+    const stColor={pending:'var(--orange)',submitted:'#60a5fa',approved:'#27c93f',revision:'#ff6b6b'};
+    const stLabel={pending:'Pending',submitted:'Submitted',approved:'Approved',revision:'Needs Revision'};
+    const stIcon={pending:'fa-hourglass-half',submitted:'fa-paper-plane',approved:'fa-circle-check',revision:'fa-rotate'};
 
     try {
-      const tasks = await TasksService.getAll();
-      const submitted = tasks.filter(t => ['submitted','approved','revision'].includes(t.status));
-      const list = document.getElementById('submissionsList');
-
+      const tasks=await TasksService.getAll();
+      const submitted=tasks.filter(t=>['submitted','approved','revision'].includes(t.status));
+      const list=document.getElementById('submissionsList');
       if (!submitted.length) {
-        list.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">No submissions yet. Submit a task to see it here.</div></div>`;
+        list.innerHTML=`<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-folder-open"></i></div><div class="empty-text">No submissions yet. Submit a task to see it here.</div></div>`;
       } else {
-        list.innerHTML = submitted.map(t => `
-          <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem;">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.6rem;">
+        list.innerHTML=submitted.map(t=>`
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.2rem">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.6rem">
               <div>
-                <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem">${t.title}</div>
-                <div style="font-size:.75rem;color:var(--text3);margin-top:.2rem">${t.category} · Assigned by ${t.supervisor_name || '—'}</div>
+                <div style="font-family:'Raleway',sans-serif;font-weight:800;font-size:.95rem">${t.title}</div>
+                <div style="font-size:.75rem;color:var(--text3);margin-top:.2rem"><i class="fa-solid fa-tag fa-xs" style="margin-right:.25rem"></i>${t.category} · <i class="fa-solid fa-user-tie fa-xs" style="margin:0 .25rem"></i>${t.supervisor_name||'—'}</div>
               </div>
-              <span style="font-size:.72rem;font-weight:700;padding:.25rem .65rem;border-radius:100px;background:${stColor[t.status]}22;color:${stColor[t.status]}">${stLabel[t.status] || t.status}</span>
+              <span style="font-size:.7rem;font-weight:700;padding:.25rem .65rem;border-radius:100px;background:${stColor[t.status]}22;color:${stColor[t.status]};display:flex;align-items:center;gap:.3rem"><i class="fa-solid ${stIcon[t.status]||'fa-circle'} fa-xs"></i>${stLabel[t.status]||t.status}</span>
             </div>
-            <div style="font-size:.78rem;color:var(--text2)">${t.description || 'No description.'}</div>
-            <div style="margin-top:.8rem;padding-top:.7rem;border-top:1px solid var(--border);font-size:.72rem;color:var(--text3);">
-              ${t.submission_count || 0} submission${t.submission_count !== 1 ? 's' : ''} · Progress: ${t.progress_pct ?? 0}%
-              ${t.submitted_at ? ' · Submitted ' + new Date(t.submitted_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : ''}
+            <div style="font-size:.78rem;color:var(--text2)">${t.description||'No description.'}</div>
+            <div style="margin-top:.8rem;padding-top:.7rem;border-top:1px solid var(--border);font-size:.72rem;color:var(--text3)">
+              <i class="fa-solid fa-paper-plane fa-xs" style="margin-right:.3rem"></i>${t.submission_count||0} submission${t.submission_count!==1?'s':''} · Progress: ${t.progress_pct??0}%
+              ${t.submitted_at?' · <i class="fa-regular fa-calendar fa-xs" style="margin:0 .2rem"></i>'+new Date(t.submitted_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):''}
             </div>
           </div>`).join('');
       }
-    } catch(e) {
-      document.getElementById('submissionsList').innerHTML = `<div class="empty-state"><div class="empty-text">Could not load submissions.</div></div>`;
-    }
+    } catch(e) { document.getElementById('submissionsList').innerHTML=`<div class="empty-state"><div class="empty-text">Could not load submissions.</div></div>`; }
   </script>
 </body>
 </html>

@@ -3,14 +3,20 @@
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Register — InternHub</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="register.css">
+  <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'dark');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="register.css"/>
   <script type="module" src="register.js"></script>
 </head>
 <body>
+
   <nav>
-    <a href="/landing/landingpage.html" class="nav-logo"><div class="logo-dot"></div>Intern<span>Hub</span></a>
-    <button class="theme-toggle" id="themeToggle"></button>
+    <a href="/landing/landingpage.html" class="nav-logo">
+      <div class="logo-icon"><i class="fa-solid fa-layer-group"></i></div>Intern<span>Hub</span>
+    </a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"></button>
   </nav>
 
   <div class="page-wrap">
@@ -20,67 +26,66 @@
         <p>Join InternHub — it's free and takes less than 2 minutes</p>
       </div>
 
-      <!-- Step indicators -->
       <div class="step-indicators">
         <div class="step-dot active" id="dot1"></div>
         <div class="step-dot" id="dot2"></div>
         <div class="step-dot" id="dot3"></div>
       </div>
 
-      <!-- Step 1: Role + Personal info -->
+      <!-- Step 1 -->
       <div class="form-section active" id="step1">
-        <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;text-align:center;margin-bottom:1.2rem;color:var(--text2);">Who are you joining as?</div>
+        <div style="font-family:'Raleway',sans-serif;font-size:1rem;font-weight:800;text-align:center;margin-bottom:1.2rem;color:var(--text2);">Who are you joining as?</div>
         <div class="role-selector">
           <div class="role-card selected" data-role="intern" id="roleIntern">
-            <div class="role-card-icon">🎓</div>
+            <div class="role-card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
             <div class="role-card-title">Intern</div>
             <div class="role-card-desc">Submit tasks, track progress, receive feedback</div>
           </div>
           <div class="role-card" data-role="supervisor" id="roleSupervisor">
-            <div class="role-card-icon">👔</div>
+            <div class="role-card-icon"><i class="fa-solid fa-briefcase"></i></div>
             <div class="role-card-title">Supervisor</div>
             <div class="role-card-desc">Manage interns, assign tasks, review submissions</div>
           </div>
         </div>
         <div class="form-card">
-          <div class="section-title-sm">Personal Information</div>
+          <div class="section-title-sm"><i class="fa-solid fa-user fa-xs" style="margin-right:.5rem;color:var(--orange)"></i>Personal Information</div>
           <div class="form-row">
             <div class="form-group">
-              <label>First Name</label>
+              <label for="firstName">First Name</label>
               <input type="text" id="firstName" placeholder="John"/>
             </div>
             <div class="form-group">
-              <label>Last Name</label>
+              <label for="lastName">Last Name</label>
               <input type="text" id="lastName" placeholder="Doe"/>
             </div>
           </div>
           <div class="form-group">
-            <label>Email Address</label>
+            <label for="regEmail"><i class="fa-solid fa-envelope fa-xs"></i> Email Address</label>
             <input type="email" id="regEmail" placeholder="you@example.com"/>
           </div>
           <div class="form-group">
-            <label>Phone Number</label>
+            <label for="phone"><i class="fa-solid fa-phone fa-xs"></i> Phone Number</label>
             <input type="text" id="phone" placeholder="+254 700 000 000"/>
           </div>
-          <div class="error-msg" id="err1">Please fill in all fields correctly.</div>
-          <button class="btn-next" onclick="goStep(2)">Continue →</button>
+          <div class="error-msg" id="err1"><i class="fa-solid fa-circle-exclamation fa-sm"></i> Please fill in all fields correctly.</div>
+          <button class="btn-next" onclick="goStep(2)"><i class="fa-solid fa-arrow-right fa-sm"></i> Continue</button>
         </div>
       </div>
 
-      <!-- Step 2: Organization + Password -->
+      <!-- Step 2 -->
       <div class="form-section" id="step2">
         <div class="form-card">
-          <div class="section-title-sm">Organization & Security</div>
+          <div class="section-title-sm"><i class="fa-solid fa-building fa-xs" style="margin-right:.5rem;color:var(--orange)"></i>Organization &amp; Security</div>
           <div class="form-group">
-            <label>Organization / Company</label>
+            <label for="org"><i class="fa-solid fa-building fa-xs"></i> Organization / Company</label>
             <input type="text" id="org" placeholder="e.g. Safaricom, TechCorp"/>
           </div>
           <div class="form-group">
-            <label>Department</label>
+            <label for="dept"><i class="fa-solid fa-sitemap fa-xs"></i> Department</label>
             <select id="dept">
               <option value="">Select department</option>
               <option>Software Engineering</option>
-              <option>Design & UX</option>
+              <option>Design &amp; UX</option>
               <option>Data Science</option>
               <option>Marketing</option>
               <option>Finance</option>
@@ -90,10 +95,10 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Password</label>
+            <label for="regPassword"><i class="fa-solid fa-lock fa-xs"></i> Password</label>
             <div class="input-wrapper">
               <input type="password" id="regPassword" placeholder="Create a strong password" oninput="checkStrength(this.value)"/>
-              <span class="input-icon" onclick="togglePwd('regPassword')">👁</span>
+              <span class="input-icon" id="togglePass1" onclick="togglePwd('regPassword','togglePass1')"><i class="fa-solid fa-eye"></i></span>
             </div>
             <div class="password-strength">
               <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
@@ -101,38 +106,36 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Confirm Password</label>
+            <label for="confirmPassword"><i class="fa-solid fa-lock fa-xs"></i> Confirm Password</label>
             <div class="input-wrapper">
               <input type="password" id="confirmPassword" placeholder="Repeat your password"/>
-              <span class="input-icon" onclick="togglePwd('confirmPassword')">👁</span>
+              <span class="input-icon" id="togglePass2" onclick="togglePwd('confirmPassword','togglePass2')"><i class="fa-solid fa-eye"></i></span>
             </div>
           </div>
-          <div class="error-msg" id="err2">Please fill all fields. Passwords must match (min 8 chars).</div>
+          <div class="error-msg" id="err2"><i class="fa-solid fa-circle-exclamation fa-sm"></i> Please fill all fields. Passwords must match (min 8 chars).</div>
           <div class="nav-btns">
-            <button class="btn-back" onclick="goStep(1)">← Back</button>
-            <button class="btn-next" onclick="goStep(3)">Continue →</button>
+            <button class="btn-back" onclick="goStep(1)"><i class="fa-solid fa-arrow-left fa-sm"></i> Back</button>
+            <button class="btn-next" onclick="goStep(3)"><i class="fa-solid fa-arrow-right fa-sm"></i> Continue</button>
           </div>
         </div>
       </div>
 
-      <!-- Step 3: Review & submit -->
+      <!-- Step 3 -->
       <div class="form-section" id="step3">
         <div class="form-card">
-          <div class="section-title-sm">Review & Confirm</div>
+          <div class="section-title-sm"><i class="fa-solid fa-circle-check fa-xs" style="margin-right:.5rem;color:var(--orange)"></i>Review &amp; Confirm</div>
           <div id="reviewContent" style="background:var(--bg3);border-radius:12px;padding:1.2rem;margin-bottom:1.5rem;font-size:.88rem;line-height:1.8;color:var(--text2);"></div>
           <div class="terms-group">
             <input type="checkbox" id="terms"/>
             <span>I agree to InternHub's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. I understand my data will be used to manage internship records.</span>
           </div>
-          <div class="error-msg" id="err3">Please accept the terms to continue.</div>
-          <button class="btn-submit" onclick="submitForm()">Create Account →</button>
+          <div class="error-msg" id="err3"><i class="fa-solid fa-circle-exclamation fa-sm"></i> Please accept the terms to continue.</div>
+          <button class="btn-submit" onclick="submitForm()"><i class="fa-solid fa-user-plus fa-sm"></i> Create Account</button>
           <div class="nav-btns" style="margin-top:.8rem">
-            <button class="btn-back" style="flex:1" onclick="goStep(2)">← Edit Details</button>
+            <button class="btn-back" style="flex:1" onclick="goStep(2)"><i class="fa-solid fa-arrow-left fa-sm"></i> Edit Details</button>
           </div>
-
-          <!-- Success card — redirect handled by register.js, no hardcoded link needed -->
-          <div class="success-card" id="successCard" style="display:none;">
-            <div class="success-icon">🎉</div>
+          <div class="success-card" id="successCard">
+            <div class="success-icon"><i class="fa-solid fa-party-horn"></i></div>
             <h2>Account Created!</h2>
             <p>Welcome to InternHub. Your account has been successfully set up. Redirecting you to your dashboard…</p>
           </div>

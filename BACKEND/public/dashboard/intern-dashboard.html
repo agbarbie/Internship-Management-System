@@ -3,38 +3,29 @@
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Dashboard — InternHub</title>
-  <script>
-    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'dark');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <link rel="stylesheet" href="intern-dashboard.css"/>
 </head>
 <body>
 
-  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <a href="../landing/landingpage.html">
-        <div class="logo-dot"></div>Intern<span>Hub</span>
+        <div class="logo-icon"><i class="fa-solid fa-layer-group"></i></div>Intern<span>Hub</span>
       </a>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Main</div>
-      <a class="nav-item active" href="intern-dashboard.html">
-        <span class="nav-item-icon">📊</span> Dashboard
-      </a>
-      <a class="nav-item" href="../Tasks/tasks.html">
-        <span class="nav-item-icon">📋</span> My Tasks
-        <span class="nav-badge" id="pendingBadge" style="display:none">0</span>
-      </a>
-      <a class="nav-item" href="/submissions/submissions.html">
-        <span class="nav-item-icon">📁</span> My Submissions
-      </a>
-      
+      <a class="nav-item active" href="intern-dashboard.html"><i class="fa-solid fa-chart-pie nav-item-icon"></i> Dashboard</a>
+      <a class="nav-item" href="../Tasks/tasks.html"><i class="fa-solid fa-clipboard-list nav-item-icon"></i> My Tasks<span class="nav-badge" id="pendingBadge" style="display:none">0</span></a>
+      <a class="nav-item" href="/submissions/submissions.html"><i class="fa-solid fa-folder-open nav-item-icon"></i> My Submissions</a>
       <div class="nav-section-label">Profile</div>
-      <a class="nav-item" href="/profile/profile.html"><span class="nav-item-icon">👤</span> My Profile</a>
-      <a class="nav-item" href="/feedback/my-feedback.html"><span class="nav-item-icon">⭐</span> My Feedback</a>
-      <a class="nav-item" href="#"><span class="nav-item-icon">⚙️</span> Settings</a>
+      <a class="nav-item" href="/profile/profile.html"><i class="fa-solid fa-circle-user nav-item-icon"></i> My Profile</a>
+      <a class="nav-item" href="/feedback/my-feedback.html"><i class="fa-solid fa-star nav-item-icon"></i> My Feedback</a>
+      <a class="nav-item" href="#"><i class="fa-solid fa-gear nav-item-icon"></i> Settings</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-mini">
@@ -44,44 +35,25 @@
           <div class="user-mini-role" id="sidebarRole">Intern</div>
         </div>
       </div>
-      <button class="logout-btn" id="logoutBtn" title="Logout">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.2"
-             stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-          <polyline points="16 17 21 12 16 7"/>
-          <line x1="21" y1="12" x2="9" y2="12"/>
-        </svg>
-        <span>Logout</span>
-      </button>
+      <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
     </div>
   </aside>
   <div class="overlay" id="overlay"></div>
 
-  <!-- TOP BAR -->
   <header class="topbar">
     <div style="display:flex;align-items:center;gap:1rem;">
       <button class="hamburger-top" id="hamburgerTop"><span></span><span></span><span></span></button>
-      <div class="topbar-left">
-        <h2>My Dashboard</h2>
-        <p id="greetingText">Welcome back 👋</p>
-      </div>
+      <div class="topbar-left"><h2>My Dashboard</h2><p id="greetingText">Welcome back</p></div>
     </div>
     <div class="topbar-right">
       <button class="theme-toggle" id="themeToggle"></button>
-      <div class="notif-btn" id="notifBtn">
-        <span>🔔</span>
-        <div class="notif-dot" id="notifDot" style="display:none"></div>
-      </div>
+      <div class="notif-btn" id="notifBtn"><i class="fa-solid fa-bell"></i><div class="notif-dot" id="notifDot" style="display:none"></div></div>
       <div class="topbar-avatar" id="topAvatar">?</div>
     </div>
   </header>
 
-  <!-- MAIN -->
   <main class="main">
     <div class="main-inner">
-
-      <!-- WELCOME BANNER -->
       <div class="welcome-banner" id="welcomeBanner">
         <div class="welcome-left">
           <div class="welcome-avatar" id="welcomeAvatar">?</div>
@@ -92,48 +64,22 @@
           </div>
         </div>
         <div class="welcome-progress">
-          <div class="welcome-progress-label">
-            <span>Internship Progress</span>
-            <span id="progressPct">0%</span>
-          </div>
-          <div class="welcome-progress-bar">
-            <div class="welcome-progress-fill" id="progressFill" style="width:0%"></div>
-          </div>
+          <div class="welcome-progress-label"><span>Internship Progress</span><span id="progressPct">0%</span></div>
+          <div class="welcome-progress-bar"><div class="welcome-progress-fill" id="progressFill" style="width:0%"></div></div>
           <div class="welcome-dates" id="welcomeDates">Loading dates...</div>
         </div>
       </div>
 
-      <!-- STAT CARDS -->
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-card-top"><div class="stat-icon orange">📋</div><span class="stat-trend" id="trendTotal">—</span></div>
-          <div class="stat-num" id="statTotal">—</div>
-          <div class="stat-label">Total Tasks</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-top"><div class="stat-icon green">✅</div><span class="stat-trend trend-up" id="trendApproved">—</span></div>
-          <div class="stat-num" id="statApproved">—</div>
-          <div class="stat-label">Approved</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-top"><div class="stat-icon blue">⏳</div><span class="stat-trend" id="trendPending">—</span></div>
-          <div class="stat-num" id="statPending">—</div>
-          <div class="stat-label">Pending Review</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-card-top"><div class="stat-icon purple">⭐</div><span class="stat-trend trend-up" id="trendScore">—</span></div>
-          <div class="stat-num" id="statScore">—</div>
-          <div class="stat-label">Avg. Score</div>
-        </div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon orange"><i class="fa-solid fa-clipboard-list"></i></div><span class="stat-trend" id="trendTotal">—</span></div><div class="stat-num" id="statTotal">—</div><div class="stat-label">Total Tasks</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon green"><i class="fa-solid fa-circle-check"></i></div><span class="stat-trend trend-up" id="trendApproved">—</span></div><div class="stat-num" id="statApproved">—</div><div class="stat-label">Approved</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon blue"><i class="fa-solid fa-hourglass-half"></i></div><span class="stat-trend" id="trendPending">—</span></div><div class="stat-num" id="statPending">—</div><div class="stat-label">Pending Review</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon purple"><i class="fa-solid fa-star"></i></div><span class="stat-trend trend-up" id="trendScore">—</span></div><div class="stat-num" id="statScore">—</div><div class="stat-label">Avg. Score</div></div>
       </div>
 
-      <!-- GRID ROW 1 -->
       <div class="dash-grid">
         <div class="widget">
-          <div class="widget-header">
-            <div class="widget-title">My Tasks</div>
-            <a class="widget-action" href="../Tasks/tasks.html">View All →</a>
-          </div>
+          <div class="widget-header"><div class="widget-title">My Tasks</div><a class="widget-action" href="../Tasks/tasks.html">View All →</a></div>
           <div class="filter-tabs" id="taskFilterTabs">
             <button class="filter-tab active" data-status="all">All</button>
             <button class="filter-tab" data-status="pending">Pending</button>
@@ -141,20 +87,16 @@
             <button class="filter-tab" data-status="approved">Approved</button>
             <button class="filter-tab" data-status="revision">Revision</button>
           </div>
-          <div class="task-list" id="myTaskList">
-            <div class="loading-state">Loading tasks...</div>
-          </div>
+          <div class="task-list" id="myTaskList"><div class="loading-state">Loading tasks...</div></div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:1.5rem;">
+        <div style="display:flex;flex-direction:column;gap:1.5rem">
           <div class="widget">
             <div class="widget-header"><div class="widget-title">My Performance</div></div>
             <div class="score-wrap">
               <div class="score-circle">
                 <svg viewBox="0 0 42 42" class="score-svg">
                   <circle cx="21" cy="21" r="15.91" fill="none" stroke="var(--bg3)" stroke-width="3"/>
-                  <circle cx="21" cy="21" r="15.91" fill="none" stroke="var(--orange)" stroke-width="3"
-                    stroke-dasharray="0 100" stroke-dashoffset="25" id="scoreArc"
-                    style="transition:stroke-dasharray 1s ease"/>
+                  <circle cx="21" cy="21" r="15.91" fill="none" stroke="var(--orange)" stroke-width="3" stroke-dasharray="0 100" stroke-dashoffset="25" id="scoreArc" style="transition:stroke-dasharray 1s ease"/>
                   <text x="21" y="19" text-anchor="middle" class="score-big" id="scoreText">—</text>
                   <text x="21" y="25" text-anchor="middle" class="score-small">/5.0</text>
                 </svg>
@@ -168,27 +110,16 @@
             </div>
           </div>
           <div class="widget">
-            <div class="widget-header">
-              <div class="widget-title">Notifications</div>
-              <button class="widget-action" id="markReadBtn">Mark all read</button>
-            </div>
+            <div class="widget-header"><div class="widget-title">Notifications</div><button class="widget-action" id="markReadBtn">Mark all read</button></div>
             <div class="notif-list" id="notifList"><div class="loading-state">Loading...</div></div>
           </div>
         </div>
       </div>
 
-      <!-- GRID ROW 2 -->
       <div class="dash-grid2">
-        <div class="widget">
-          <div class="widget-header"><div class="widget-title">Recent Feedback</div></div>
-          <div class="feedback-list" id="feedbackList"><div class="loading-state">Loading feedback...</div></div>
-        </div>
-        <div class="widget">
-          <div class="widget-header"><div class="widget-title">Recent Activity</div></div>
-          <div class="activity-list" id="activityFeed"><div class="loading-state">Loading activity...</div></div>
-        </div>
+        <div class="widget"><div class="widget-header"><div class="widget-title">Recent Feedback</div></div><div class="feedback-list" id="feedbackList"><div class="loading-state">Loading feedback...</div></div></div>
+        <div class="widget"><div class="widget-header"><div class="widget-title">Recent Activity</div></div><div class="activity-list" id="activityFeed"><div class="loading-state">Loading activity...</div></div></div>
       </div>
-
     </div>
   </main>
 

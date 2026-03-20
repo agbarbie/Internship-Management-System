@@ -3,23 +3,25 @@
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>All Tasks — InternHub</title>
-  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'dark');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <link rel="stylesheet" href="../dashboard/supervisor-dashboard.css"/>
   <style>
     .page-header-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
-    .page-title{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;}
+    .page-title{font-family:'Raleway',sans-serif;font-size:1.4rem;font-weight:900;letter-spacing:-.02em;}
     .filter-bar{display:flex;align-items:center;gap:.7rem;margin-bottom:1.5rem;flex-wrap:wrap;}
-    .filter-btn{padding:.45rem .9rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-family:'DM Sans',sans-serif;font-size:.8rem;cursor:pointer;transition:all .2s;}
+    .filter-btn{padding:.45rem .9rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text2);font-family:'Poppins',sans-serif;font-size:.78rem;cursor:pointer;transition:all .2s;}
     .filter-btn:hover,.filter-btn.active{border-color:var(--orange);color:var(--orange);background:var(--orange-glow);}
     .tasks-table{width:100%;border-collapse:collapse;}
-    .tasks-table th{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);padding:.6rem .8rem;text-align:left;border-bottom:1px solid var(--border);}
-    .tasks-table td{padding:.75rem .8rem;font-size:.85rem;border-bottom:1px solid var(--border);}
+    .tasks-table th{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);padding:.6rem .8rem;text-align:left;border-bottom:1px solid var(--border);font-weight:700;}
+    .tasks-table td{padding:.75rem .8rem;font-size:.84rem;border-bottom:1px solid var(--border);}
     .tasks-table tr:last-child td{border-bottom:none;}
     .tasks-table tr:hover td{background:var(--bg3);}
-    .search-bar-wide{flex:1;max-width:300px;padding:.45rem .9rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:'DM Sans',sans-serif;font-size:.82rem;outline:none;}
+    .search-bar-wide{flex:1;max-width:300px;padding:.45rem .9rem;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:'Poppins',sans-serif;font-size:.8rem;outline:none;}
     .search-bar-wide:focus{border-color:var(--orange);}
-    .priority-badge{font-size:.65rem;font-weight:700;padding:.15rem .45rem;border-radius:4px;}
+    .priority-badge{font-size:.63rem;font-weight:700;padding:.15rem .45rem;border-radius:4px;}
     .p-low{background:rgba(39,201,63,.12);color:#27c93f;}
     .p-medium{background:rgba(255,107,0,.12);color:var(--orange);}
     .p-high{background:rgba(255,60,60,.12);color:#ff6b6b;}
@@ -29,19 +31,19 @@
 <body>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <a href="/landing/landingpage.html"><div class="logo-dot"></div>Intern<span>Hub</span></a>
+      <a href="/landing/landingpage.html"><div class="logo-icon"><i class="fa-solid fa-layer-group"></i></div>Intern<span>Hub</span></a>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Overview</div>
-      <a class="nav-item" href="/dashboard/supervisor-dashboard.html"><span class="nav-item-icon">📊</span> Dashboard</a>
-      <a class="nav-item" href="/interns/my-interns.html"><span class="nav-item-icon">👥</span> My Interns</a>
-      <a class="nav-item" href="/dashboard/supervisor-dashboard.html#reviews"><span class="nav-item-icon">✅</span> Pending Reviews</a>
-      <a class="nav-item active" href="/interns/all-tasks.html"><span class="nav-item-icon">📋</span> All Tasks</a>
+      <a class="nav-item" href="/dashboard/supervisor-dashboard.html"><i class="fa-solid fa-chart-pie nav-item-icon"></i> Dashboard</a>
+      <a class="nav-item" href="/interns/my-interns.html"><i class="fa-solid fa-users nav-item-icon"></i> My Interns</a>
+      <a class="nav-item" href="/dashboard/supervisor-dashboard.html#reviews"><i class="fa-solid fa-circle-check nav-item-icon"></i> Pending Reviews</a>
+      <a class="nav-item active" href="/interns/all-tasks.html"><i class="fa-solid fa-clipboard-list nav-item-icon"></i> All Tasks</a>
       <div class="nav-section-label">Management</div>
-      <a class="nav-item" href="#" id="assignTaskBtn"><span class="nav-item-icon">➕</span> Assign Task</a>
-      <a class="nav-item" href="/reports/reports.html"><span class="nav-item-icon">📈</span> Reports</a>
+      <a class="nav-item" href="#" id="assignTaskBtn"><i class="fa-solid fa-plus nav-item-icon"></i> Assign Task</a>
+      <a class="nav-item" href="/reports/reports.html"><i class="fa-solid fa-chart-line nav-item-icon"></i> Reports</a>
       <div class="nav-section-label">Account</div>
-      <a class="nav-item" href="#"><span class="nav-item-icon">⚙️</span> Settings</a>
+      <a class="nav-item" href="#"><i class="fa-solid fa-gear nav-item-icon"></i> Settings</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-mini">
@@ -51,12 +53,7 @@
           <div class="user-mini-role" id="sidebarRole">Supervisor</div>
         </div>
       </div>
-      <button class="logout-btn" id="logoutBtn" title="Logout">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-        </svg>
-        <span>Logout</span>
-      </button>
+      <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
     </div>
   </aside>
   <div class="overlay" id="overlay"></div>
@@ -74,50 +71,37 @@
 
   <main class="main">
     <div class="main-inner">
-
       <div class="page-header-bar">
         <div class="page-title">All Tasks</div>
-        <button class="btn-primary-sm" id="openAssignModal">+ Assign Task</button>
+        <button class="btn-primary-sm" id="openAssignModal"><i class="fa-solid fa-plus fa-xs"></i> Assign Task</button>
       </div>
-
       <div class="filter-bar">
         <button class="filter-btn active" data-filter="all">All</button>
         <button class="filter-btn" data-filter="pending">Pending</button>
         <button class="filter-btn" data-filter="submitted">Submitted</button>
         <button class="filter-btn" data-filter="approved">Approved</button>
         <button class="filter-btn" data-filter="revision">Revision</button>
-        <input class="search-bar-wide" type="text" placeholder="🔍 Search tasks or interns…" id="taskSearch" oninput="filterTasks()">
+        <input class="search-bar-wide" type="text" placeholder="Search tasks or interns…" id="taskSearch" oninput="filterTasks()">
       </div>
-
       <div class="widget" style="padding:0;overflow:hidden;">
-        <div style="overflow-x:auto;">
+        <div style="overflow-x:auto">
           <table class="tasks-table">
-            <thead>
-              <tr><th>Task</th><th>Intern</th><th>Category</th><th>Priority</th><th>Due</th><th>Status</th><th>Progress</th></tr>
-            </thead>
-            <tbody id="tasksBody">
-              <tr><td colspan="7" class="loading-cell">Loading tasks…</td></tr>
-            </tbody>
+            <thead><tr><th>Task</th><th>Intern</th><th>Category</th><th>Priority</th><th>Due</th><th>Status</th><th>Progress</th></tr></thead>
+            <tbody id="tasksBody"><tr><td colspan="7" class="loading-cell">Loading tasks…</td></tr></tbody>
           </table>
         </div>
       </div>
-
     </div>
   </main>
 
-  <!-- Assign Task Modal (reused) -->
   <div class="modal-backdrop" id="assignModal">
     <div class="modal">
-      <div class="modal-header"><h2>Assign New Task</h2><button class="modal-close" id="closeModal">✕</button></div>
+      <div class="modal-header"><h2>Assign New Task</h2><button class="modal-close" id="closeModal"><i class="fa-solid fa-xmark"></i></button></div>
       <div class="modal-body">
         <div class="form-group"><label>Task Title *</label><input type="text" id="taskTitle" placeholder="e.g. Data Analysis Report"/></div>
         <div class="form-row">
-          <div class="form-group"><label>Category *</label>
-            <select id="taskCategory"><option value="">Select category</option><option>Design</option><option>Development</option><option>Data Science</option><option>Report</option><option>Marketing</option><option>Finance</option><option>Other</option></select>
-          </div>
-          <div class="form-group"><label>Priority</label>
-            <select id="taskPriority"><option value="medium">Medium</option><option value="low">Low</option><option value="high">High</option><option value="urgent">Urgent</option></select>
-          </div>
+          <div class="form-group"><label>Category *</label><select id="taskCategory"><option value="">Select category</option><option>Design</option><option>Development</option><option>Data Science</option><option>Report</option><option>Marketing</option><option>Finance</option><option>Other</option></select></div>
+          <div class="form-group"><label>Priority</label><select id="taskPriority"><option value="medium">Medium</option><option value="low">Low</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>
         </div>
         <div class="form-group"><label>Assign To *</label><select id="taskAssignTo"><option value="">Select intern...</option></select></div>
         <div class="form-group"><label>Due Date</label><input type="date" id="taskDueDate"/></div>
@@ -126,14 +110,13 @@
       </div>
       <div class="modal-footer">
         <button class="btn-cancel" id="cancelModal">Cancel</button>
-        <button class="btn-assign" id="submitTask">Assign Task →</button>
+        <button class="btn-assign" id="submitTask"><i class="fa-solid fa-paper-plane fa-sm"></i> Assign Task</button>
       </div>
     </div>
   </div>
 
   <script type="module">
     import { AuthService, TasksService, InternsService } from '../services/api.js';
-
     if (!AuthService.isLoggedIn()) { window.location.href = '/login/login.html'; }
     const user = AuthService.getCurrentUser();
     if (user?.role === 'intern') { window.location.href = '/dashboard/intern-dashboard.html'; }
@@ -142,25 +125,15 @@
       const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next); localStorage.setItem('theme', next);
     });
-    document.getElementById('hamburgerTop')?.addEventListener('click', () => {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('overlay').classList.toggle('show');
-    });
-    document.getElementById('overlay')?.addEventListener('click', () => {
-      document.getElementById('sidebar').classList.remove('open');
-      document.getElementById('overlay').classList.remove('show');
-    });
+    document.getElementById('hamburgerTop')?.addEventListener('click', () => { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); });
+    document.getElementById('overlay')?.addEventListener('click', () => { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); });
     document.getElementById('logoutBtn')?.addEventListener('click', () => AuthService.logout());
-
-    const initials = AuthService.getInitials();
-    document.getElementById('sidebarAvatar').textContent = initials;
-    document.getElementById('topAvatar').textContent     = initials;
+    document.getElementById('sidebarAvatar').textContent = AuthService.getInitials();
+    document.getElementById('topAvatar').textContent     = AuthService.getInitials();
     document.getElementById('sidebarName').textContent   = AuthService.getDisplayName();
     document.getElementById('sidebarRole').textContent   = `Supervisor · ${user?.organization || 'InternHub'}`;
 
-    let allTasks   = [];
-    let activeFilter = 'all';
-
+    let allTasks = []; let activeFilter = 'all';
     const stLabel = { pending:'Pending', submitted:'Submitted', approved:'Approved', revision:'Revision', in_review:'In Review', rejected:'Rejected' };
     const stColor = { pending:'sb-pending', submitted:'sb-review', approved:'sb-active', revision:'sb-pending', in_review:'sb-review' };
     const prioClass = { low:'p-low', medium:'p-medium', high:'p-high', urgent:'p-urgent' };
@@ -168,92 +141,51 @@
     try {
       allTasks = await TasksService.getAll();
       renderTasks();
-
-      // Populate assign dropdown
       const interns = await InternsService.getAll();
       const sel = document.getElementById('taskAssignTo');
-      interns.forEach(i => {
-        const opt = document.createElement('option');
-        opt.value = i.id; opt.textContent = `${i.full_name} — ${i.department||'—'}`;
-        sel.appendChild(opt);
-      });
-    } catch(e) {
-      document.getElementById('tasksBody').innerHTML = '<tr><td colspan="7" class="loading-cell">Could not load tasks.</td></tr>';
-    }
+      interns.forEach(i => { const o = document.createElement('option'); o.value = i.id; o.textContent = `${i.full_name} — ${i.department||'—'}`; sel.appendChild(o); });
+    } catch(e) { document.getElementById('tasksBody').innerHTML = '<tr><td colspan="7" class="loading-cell">Could not load tasks.</td></tr>'; }
 
     function renderTasks() {
       const search = (document.getElementById('taskSearch')?.value || '').toLowerCase();
       const filtered = allTasks.filter(t => {
-        const matchFilter = activeFilter === 'all' || t.status === activeFilter;
-        const matchSearch = !search || (t.title||'').toLowerCase().includes(search) || (t.intern_name||'').toLowerCase().includes(search);
-        return matchFilter && matchSearch;
+        const mf = activeFilter === 'all' || t.status === activeFilter;
+        const ms = !search || (t.title||'').toLowerCase().includes(search) || (t.intern_name||'').toLowerCase().includes(search);
+        return mf && ms;
       });
-
       const tbody = document.getElementById('tasksBody');
       if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="7" class="loading-cell">No tasks found.</td></tr>'; return; }
-
       tbody.innerHTML = filtered.map(t => {
-        const due     = t.due_date ? new Date(t.due_date).toLocaleDateString('en-GB',{day:'2-digit',month:'short'}) : '—';
+        const due = t.due_date ? new Date(t.due_date).toLocaleDateString('en-GB',{day:'2-digit',month:'short'}) : '—';
         const overdue = t.due_date && new Date(t.due_date) < new Date() && !['approved','rejected'].includes(t.status);
         return `<tr>
-          <td style="font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(t.title)}</td>
+          <td style="font-weight:600;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(t.title)}</td>
           <td style="color:var(--text2)">${esc(t.intern_name||'—')}</td>
           <td style="color:var(--text3);font-size:.78rem">${esc(t.category||'—')}</td>
           <td><span class="priority-badge ${prioClass[t.priority]||'p-medium'}">${(t.priority||'medium').toUpperCase()}</span></td>
-          <td style="font-size:.78rem;color:${overdue?'#ff6b6b':'var(--text2)'}">${overdue?'⚠ ':''}${due}</td>
+          <td style="font-size:.78rem;color:${overdue?'#ff6b6b':'var(--text2)'}">${overdue?'<i class="fa-solid fa-triangle-exclamation fa-xs"></i> ':''}${due}</td>
           <td><span class="status-badge ${stColor[t.status]||'sb-pending'}">${stLabel[t.status]||t.status}</span></td>
-          <td>
-            <div style="display:flex;align-items:center;gap:.4rem">
-              <div class="progress-mini"><div class="progress-mini-fill" style="width:${t.progress_pct??0}%"></div></div>
-              <span style="font-size:.7rem;color:var(--text2)">${t.progress_pct??0}%</span>
-            </div>
-          </td>
+          <td><div style="display:flex;align-items:center;gap:.4rem"><div class="progress-mini"><div class="progress-mini-fill" style="width:${t.progress_pct??0}%"></div></div><span style="font-size:.7rem;color:var(--text2)">${t.progress_pct??0}%</span></div></td>
         </tr>`;
       }).join('');
     }
-
     window.filterTasks = renderTasks;
-
-    // Filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeFilter = btn.dataset.filter;
-        renderTasks();
-      });
-    });
-
-    // Assign modal
-    ['openAssignModal','assignTaskBtn'].forEach(id =>
-      document.getElementById(id)?.addEventListener('click', () => document.getElementById('assignModal').classList.add('open'))
-    );
-    ['closeModal','cancelModal'].forEach(id =>
-      document.getElementById(id)?.addEventListener('click', () => document.getElementById('assignModal').classList.remove('open'))
-    );
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => { document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); activeFilter = btn.dataset.filter; renderTasks(); }));
+    ['openAssignModal','assignTaskBtn'].forEach(id => document.getElementById(id)?.addEventListener('click', () => document.getElementById('assignModal').classList.add('open')));
+    ['closeModal','cancelModal'].forEach(id => document.getElementById(id)?.addEventListener('click', () => document.getElementById('assignModal').classList.remove('open')));
     document.getElementById('assignModal')?.addEventListener('click', e => { if(e.target===e.currentTarget) document.getElementById('assignModal').classList.remove('open'); });
-
     document.getElementById('submitTask')?.addEventListener('click', async () => {
-      const title    = document.getElementById('taskTitle').value.trim();
-      const category = document.getElementById('taskCategory').value;
-      const assignTo = document.getElementById('taskAssignTo').value;
-      const priority = document.getElementById('taskPriority').value;
-      const dueDate  = document.getElementById('taskDueDate').value;
-      const desc     = document.getElementById('taskDescription').value.trim();
-      const errEl    = document.getElementById('modalError');
+      const title = document.getElementById('taskTitle').value.trim(), category = document.getElementById('taskCategory').value, assignTo = document.getElementById('taskAssignTo').value;
+      const errEl = document.getElementById('modalError');
       if (!title||!category||!assignTo) { errEl.textContent='Please fill Title, Category and Assign To.'; errEl.style.display='block'; return; }
       errEl.style.display='none';
-      const btn = document.getElementById('submitTask');
-      btn.disabled=true; btn.textContent='Assigning…';
+      const btn = document.getElementById('submitTask'); btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin fa-sm"></i> Assigning…';
       try {
-        await TasksService.create({ title, description:desc, category, priority, assigned_to:parseInt(assignTo), due_date:dueDate||undefined });
-        document.getElementById('assignModal').classList.remove('open');
-        allTasks = await TasksService.getAll();
-        renderTasks();
+        await TasksService.create({ title, description:document.getElementById('taskDescription').value.trim(), category, priority:document.getElementById('taskPriority').value, assigned_to:parseInt(assignTo), due_date:document.getElementById('taskDueDate').value||undefined });
+        document.getElementById('assignModal').classList.remove('open'); allTasks = await TasksService.getAll(); renderTasks();
       } catch(e) { errEl.textContent=e.message||'Failed.'; errEl.style.display='block'; }
-      finally { btn.disabled=false; btn.textContent='Assign Task →'; }
+      finally { btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-paper-plane fa-sm"></i> Assign Task'; }
     });
-
     function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   </script>
 </body>

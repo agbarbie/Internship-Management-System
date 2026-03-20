@@ -3,24 +3,26 @@
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Feedback — InternHub</title>
-  <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');</script>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script>document.documentElement.setAttribute('data-theme',localStorage.getItem('theme')||'dark');</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
   <link rel="stylesheet" href="../dashboard/intern-dashboard.css"/>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <a href="/landing/landingpage.html"><div class="logo-dot"></div>Intern<span>Hub</span></a>
+      <a href="/landing/landingpage.html"><div class="logo-icon"><i class="fa-solid fa-layer-group"></i></div>Intern<span>Hub</span></a>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label">Main</div>
-      <a class="nav-item" href="/dashboard/intern-dashboard.html"><span class="nav-item-icon">📊</span> Dashboard</a>
-      <a class="nav-item" href="/Tasks/tasks.html"><span class="nav-item-icon">📋</span> My Tasks</a>
-      <a class="nav-item" href="/submissions/submissions.html"><span class="nav-item-icon">📁</span> My Submissions</a>
+      <a class="nav-item" href="/dashboard/intern-dashboard.html"><i class="fa-solid fa-chart-pie nav-item-icon"></i> Dashboard</a>
+      <a class="nav-item" href="/Tasks/tasks.html"><i class="fa-solid fa-clipboard-list nav-item-icon"></i> My Tasks</a>
+      <a class="nav-item" href="/submissions/submissions.html"><i class="fa-solid fa-folder-open nav-item-icon"></i> My Submissions</a>
       <div class="nav-section-label">Profile</div>
-      <a class="nav-item" href="/profile/profile.html"><span class="nav-item-icon">👤</span> My Profile</a>
-      <a class="nav-item active" href="/feedback/my-feedback.html"><span class="nav-item-icon">⭐</span> My Feedback</a>
-      <a class="nav-item" href="#"><span class="nav-item-icon">⚙️</span> Settings</a>
+      <a class="nav-item" href="/profile/profile.html"><i class="fa-solid fa-circle-user nav-item-icon"></i> My Profile</a>
+      <a class="nav-item active" href="/feedback/my-feedback.html"><i class="fa-solid fa-star nav-item-icon"></i> My Feedback</a>
+      <a class="nav-item" href="#"><i class="fa-solid fa-gear nav-item-icon"></i> Settings</a>
     </nav>
     <div class="sidebar-footer">
       <div class="user-mini">
@@ -30,12 +32,7 @@
           <div class="user-mini-role" id="sidebarRole">Intern</div>
         </div>
       </div>
-      <button class="logout-btn" id="logoutBtn" title="Logout">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-        </svg>
-        <span>Logout</span>
-      </button>
+      <button class="logout-btn" id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i><span>Logout</span></button>
     </div>
   </aside>
   <div class="overlay" id="overlay"></div>
@@ -86,7 +83,7 @@
     try {
       const tasks = await TasksService.getAll({ status: 'approved' });
       if (!tasks?.length) {
-        list.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">No feedback yet. Keep submitting tasks to receive feedback!</div></div>`;
+        list.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-comments"></i></div><div class="empty-text">No feedback yet. Keep submitting tasks to receive feedback!</div></div>`;
       } else {
         const details = await Promise.all(tasks.slice(0,10).map(t => TasksService.getById(t.id).catch(() => null)));
         const allFeedback = details.filter(Boolean).flatMap(d =>
@@ -94,20 +91,20 @@
         ).sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
 
         if (!allFeedback.length) {
-          list.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-text">No feedback received yet.</div></div>`;
+          list.innerHTML = `<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-comments"></i></div><div class="empty-text">No feedback received yet.</div></div>`;
         } else {
           list.innerHTML = allFeedback.map(f => {
             const stars = Math.round(f.rating || 0);
-            const starStr = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+            const starIcons = '<i class="fa-solid fa-star" style="color:#f59e0b"></i>'.repeat(stars) + '<i class="fa-regular fa-star" style="color:var(--text3)"></i>'.repeat(5-stars);
             return `
               <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.7rem;">
-                  <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;">${f.task_title}</div>
-                  <span style="color:#f59e0b;font-size:1.1rem;">${starStr}</span>
+                  <div style="font-family:'Raleway',sans-serif;font-weight:800;font-size:.92rem;">${f.task_title}</div>
+                  <span style="font-size:.9rem;letter-spacing:.05em">${starIcons}</span>
                 </div>
                 <div style="font-size:.85rem;color:var(--text2);font-style:italic;line-height:1.6;">"${f.comment || 'No comment provided.'}"</div>
                 <div style="margin-top:.7rem;font-size:.72rem;color:var(--text3);">
-                  by ${f.given_by_name || '—'} · ${f.created_at ? new Date(f.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : ''}
+                  <i class="fa-solid fa-user-tie fa-xs" style="margin-right:.3rem"></i>by ${f.given_by_name || '—'} · ${f.created_at ? new Date(f.created_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : ''}
                 </div>
               </div>`;
           }).join('');
